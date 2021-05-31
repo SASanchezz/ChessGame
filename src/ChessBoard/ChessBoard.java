@@ -1,20 +1,22 @@
 package ChessBoard;
 
+import Starting.StartingMenu;
+
 import javax.swing.*;
 import javax.swing.text.EditorKit;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class ChessBoard extends JFrame{
-    static HashMap<String, Cell> CellSet = new HashMap<>();
+    protected static HashMap<String, Cell> CellSet = new HashMap<>();
 
     public ChessBoard() {
-        setSize(1600, 800);
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
         setContentPane(new DrawBoard());
 
@@ -40,22 +42,25 @@ public class ChessBoard extends JFrame{
 
         DrawBoard() {
             setLayout(null);
-            JButton ExitButton = new JButton("Exit");
-            ExitButton.setBounds(ChessBoard.this.getWidth()/8, ChessBoard.this.getHeight()/8, 50, 20);
-            ExitButton.addActionListener(ActionListener );
+
         }
+
+
 
         public void paintComponent (Graphics g) {
             setBackground(Color.ORANGE);
 
-            setLayout(null);
+            add(ExitButton());
+            add(ReturnButton());
+
             Graphics2D g2 = (Graphics2D) g;
             super.paintComponent(g);
 
             int WindowHeight = ChessBoard.this.getHeight();
+            int WindowWidth = ChessBoard.this.getWidth();
             int CellSize = WindowHeight / 8;
 
-            System.out.println("gen width: " + WindowHeight + " Cell width: " + CellSize);
+            System.out.println("gen width: " + WindowWidth + " Cell width: " + CellSize);
 
             String[] letters = {
                     "a", "b", "c", "d", "e", "f", "g", "h"
@@ -65,15 +70,16 @@ public class ChessBoard extends JFrame{
             for (int i = 1; i <= 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if ((j + i) % 2 == 0) {
-                        g2.setColor(Color.WHITE);
-                    } else {
                         g2.setColor(Color.getHSBColor(1.40F, 0.98F, 0.3F));
+                    } else {
+                        g2.setColor(Color.WHITE);
 
                     }
-                    CellSet.put(letters[j] + i, new Cell());
-                    g2.fillRect((WindowHeight - WindowHeight / 2) + j * CellSize, (i - 1) * CellSize, CellSize, CellSize);
-                    g2.drawRect((WindowHeight - WindowHeight / 2) + j * CellSize, (i - 1) * CellSize, CellSize, CellSize);
-                    //System.out.println((WindowHeight - WindowHeight / 2) +"+"+ j * CellSize + " " + (i - 1) * CellSize + " " + CellSize + " " + CellSize);
+                    CellSet.put(letters[j] + (9-i), new Cell(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize));
+                    //System.out.print(letters[j] + (9-i) +";  ");
+
+                    g2.fillRect(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize, CellSize);
+                    //System.out.println((WindowWidth / 4) +"+"+ j * CellSize + " " + (i - 1) * CellSize + " " + CellSize + " " + CellSize);
                 }
 
             }
@@ -82,6 +88,31 @@ public class ChessBoard extends JFrame{
 
 
 
+        }
+        private JButton ExitButton() {
+            JButton button = new JButton("Exit");
+            button.setBounds(ChessBoard.this.getWidth()-80, 0, 80, 30);
+            button.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(1);
+                }
+            } );
+            return button;
+        }
+
+        private JButton ReturnButton() {
+            JButton button = new JButton("To menu");
+            button.setBounds(ChessBoard.this.getWidth()-100, ChessBoard.this.getHeight()-30, 100, 30);
+            button.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setVisible(false);
+                    dispose();
+                    new StartingMenu();
+                }
+            } );
+            return button;
         }
     }
 

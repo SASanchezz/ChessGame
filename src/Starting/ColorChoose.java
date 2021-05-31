@@ -49,7 +49,7 @@ public class ColorChoose extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Config.COLOR = "WHITE";
-
+                    new ChessBoard();
                 }
             });
             return button;

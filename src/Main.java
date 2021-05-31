@@ -1,3 +1,4 @@
+import ChessBoard.ChessBoard;
 import Starting.StartingMenu;
 
 public class Main {
