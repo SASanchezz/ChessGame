@@ -9,7 +9,7 @@ public class PawnWhite extends AbstractFigure{
     ArrayList<Cell> AllowedHits = new ArrayList<>();
 
 
-    PawnWhite(Cell StartingCell) {
+    public PawnWhite(Cell StartingCell) {
         super(StartingCell);
     }
     @Override

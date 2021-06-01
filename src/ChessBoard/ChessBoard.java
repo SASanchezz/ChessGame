@@ -1,21 +1,23 @@
 package ChessBoard;
 
+import Figures.PawnWhite;
 import Starting.StartingMenu;
 
 import javax.swing.*;
-import javax.swing.text.EditorKit;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class ChessBoard extends JFrame{
     private static HashMap<String, Cell> CellSet = new HashMap<>();
-
     public static HashMap<String, Cell> getCellSet() {
         return CellSet;
     }
+
+    String[] letters = {
+            "a", "b", "c", "d", "e", "f", "g", "h"
+    };
 
     public ChessBoard() {
         setLayout(null);
@@ -23,9 +25,22 @@ public class ChessBoard extends JFrame{
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
         setContentPane(new DrawBoard());
-
+        DrawFigures();
         setVisible(true);
     }
+
+    public void DrawFigures() {
+        //White Pawns
+        for (int i=0; i<8; i++) {
+            PawnWhite Pawn = new PawnWhite(CellSet.get(letters[i]+2));
+            Pawn.setBounds(10, 10, 100, 100);
+            getContentPane().add(Pawn);
+
+        }
+    }
+
+
+
 
     class DrawBoard extends JPanel {
 
@@ -33,8 +48,6 @@ public class ChessBoard extends JFrame{
             setLayout(null);
 
         }
-
-
 
         public void paintComponent (Graphics g) {
             setBackground(Color.ORANGE);
@@ -51,9 +64,7 @@ public class ChessBoard extends JFrame{
 
             System.out.println("gen width: " + WindowWidth + " Cell width: " + CellSize);
 
-            String[] letters = {
-                    "a", "b", "c", "d", "e", "f", "g", "h"
-            };
+
             setLayout(new GridLayout(8, 8));
 
             for (int i = 1; i <= 8; i++) {
