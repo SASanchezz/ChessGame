@@ -1,6 +1,9 @@
-package ChessBoard;
+package Figures;
 
 import ChessBoard.Cell;
+
+import java.sql.Array;
+import java.util.ArrayList;
 
 public abstract class AbstractFigure {
     Cell StartingCell;
@@ -9,6 +12,8 @@ public abstract class AbstractFigure {
     AbstractFigure(Cell StartingCell) {
         this.StartingCell = StartingCell;
     }
+
+    ArrayList<String> AllowedMoves = new ArrayList<>();
 
     public void move (Cell toCell) {
         this.ActualCell = toCell;
