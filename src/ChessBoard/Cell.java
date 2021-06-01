@@ -1,13 +1,40 @@
 package ChessBoard;
 
-import java.awt.*;
 
 public class Cell {
-    Color COLOR;
-    int[] REAL_COORDINATES = new int[2];
+    private boolean Occupied = false;
+    private int CellSize;
+    private int[] REAL_COORDINATES = new int[2];
 
     Cell(int x, int y, int Size) {
-        REAL_COORDINATES[0] = x;
-        REAL_COORDINATES[1] = y;
+        this.REAL_COORDINATES[0] = x;
+        this.REAL_COORDINATES[1] = y;
+        this.CellSize = Size;
     }
+
+    public boolean isOccupied() {
+        return Occupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        Occupied = occupied;
+    }
+
+    public int getCelSize() {
+        return CellSize;
+    }
+
+    public void setCelSize(int cellSize) {
+        CellSize = cellSize;
+    }
+
+    public int[] getREAL_COORDINATES() {
+        return REAL_COORDINATES;
+    }
+
+    public void setREAL_COORDINATES(int[] REAL_COORDINATES) {
+        this.REAL_COORDINATES = REAL_COORDINATES;
+    }
+
+
 }

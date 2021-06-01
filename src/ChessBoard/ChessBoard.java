@@ -11,7 +11,11 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class ChessBoard extends JFrame{
-    protected static HashMap<String, Cell> CellSet = new HashMap<>();
+    private static HashMap<String, Cell> CellSet = new HashMap<>();
+
+    public static HashMap<String, Cell> getCellSet() {
+        return CellSet;
+    }
 
     public ChessBoard() {
         setLayout(null);
@@ -53,15 +57,15 @@ public class ChessBoard extends JFrame{
             setLayout(new GridLayout(8, 8));
 
             for (int i = 1; i <= 8; i++) {
-                for (int j = 1; j <=8; j++) {
+                for (int j = 0; j <8; j++) {
                     if ((j + i) % 2 == 0) {
                         g2.setColor(Color.getHSBColor(1.40F, 0.98F, 0.3F));
                     } else {
                         g2.setColor(Color.WHITE);
 
                     }
-                    CellSet.put(String.valueOf(j) + (9 - i), new Cell(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize));
-                    System.out.print(String.valueOf(j) + (9 - i)+";  ");
+                    CellSet.put(letters[j] + (9 - i), new Cell(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize));
+                    System.out.print(letters[j] + (9 - i)+";  ");
 
                     g2.fillRect(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize, CellSize);
                     //System.out.println((WindowWidth / 4) +"+"+ j * CellSize + " " + (i - 1) * CellSize + " " + CellSize + " " + CellSize);
