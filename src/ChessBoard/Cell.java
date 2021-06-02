@@ -24,16 +24,9 @@ public class Cell {
         return CellSize;
     }
 
-    public void setCellSize(int cellSize) {
-        CellSize = cellSize;
-    }
 
     public int[] getREAL_COORDINATES() {
         return REAL_COORDINATES;
-    }
-
-    public void setREAL_COORDINATES(int[] REAL_COORDINATES) {
-        this.REAL_COORDINATES = REAL_COORDINATES;
     }
 
 

@@ -1,6 +1,8 @@
 package Figures;
 
 import ChessBoard.Cell;
+
+import static Auxiliary.IconChanger.iconChange;
 import static ChessBoard.ChessBoard.getCellSet;
 import java.util.ArrayList;
 import static Auxiliary.GetKey.getKey;
@@ -9,9 +11,13 @@ public class PawnWhite extends AbstractFigure{
     ArrayList<Cell> AllowedHits = new ArrayList<>();
 
 
-    public PawnWhite(Cell StartingCell) {
+    public PawnWhite(Cell StartingCell, int Size) {
         super(StartingCell);
+        setIcon(iconChange(Size).get("WPawn.png"));
+
+
     }
+
     @Override
     public void move (Cell toCell) {
         if (AllowedMoves.contains(toCell)) {

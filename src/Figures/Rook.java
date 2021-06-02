@@ -2,7 +2,7 @@ package Figures;
 
 import static Auxiliary.GetKey.getKey;
 import static ChessBoard.ChessBoard.getCellSet;
-
+import static Auxiliary.IconChanger.iconChange;
 
 import ChessBoard.Cell;
 
@@ -10,8 +10,12 @@ import ChessBoard.Cell;
 
 public class Rook extends AbstractFigure {
 
-    Rook(Cell StartingCell) {
+    public Rook(Cell StartingCell, int Size, boolean Color) {
         super(StartingCell);
+        if (Color) {
+            setIcon(iconChange(Size).get("WRook.png"));
+        } else setIcon(iconChange(Size).get("BRook.png"));
+
     }
 
     @Override
