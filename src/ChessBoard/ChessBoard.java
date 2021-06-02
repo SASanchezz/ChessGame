@@ -1,5 +1,6 @@
 package ChessBoard;
 
+import Figures.AbstractFigure;
 import Figures.PawnBlack;
 import Figures.PawnWhite;
 import Figures.Rook;
@@ -9,7 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
+
+import static Auxiliary.DetermineCell.determineCell;
 
 public class ChessBoard extends JFrame{
     private static HashMap<String, Cell> CellSet = new HashMap<>();
@@ -37,29 +42,25 @@ public class ChessBoard extends JFrame{
 //      White Pawns
         for (int i=0; i<8; i++) {
             Cell ItsCell = CellSet.get(letters[i]+2);
-            System.out.println(ItsCell.getREAL_COORDINATES()[0]);
             PawnWhite Pawn = new PawnWhite(ItsCell, Size);
-            Pawn.setBounds(ItsCell.getREAL_COORDINATES()[0], ItsCell.getREAL_COORDINATES()[1], ItsCell.getCellSize(), ItsCell.getCellSize());
             getContentPane().add(Pawn);
         }
 //      Black Pawns
         for (int i=0; i<8; i++) {
             Cell ItsCell = CellSet.get(letters[i]+7);
-            System.out.println(ItsCell.getREAL_COORDINATES()[0]);
             PawnBlack Pawn = new PawnBlack(ItsCell, Size);
-            Pawn.setBounds(ItsCell.getREAL_COORDINATES()[0], ItsCell.getREAL_COORDINATES()[1], ItsCell.getCellSize(), ItsCell.getCellSize());
             getContentPane().add(Pawn);
         }
 //      White Rooks
         Rook WLeftRook = new Rook(CellSet.get("a1"), Size, true);
-        WLeftRook.setBounds(CellSet.get("a1").getREAL_COORDINATES()[0], CellSet.get("a1").getREAL_COORDINATES()[1], CellSet.get("a1").getCellSize(), CellSet.get("a1").getCellSize());
+        //WLeftRook.setBounds(CellSet.get("a1").getREAL_COORDINATES()[0], CellSet.get("a1").getREAL_COORDINATES()[1], CellSet.get("a1").getCellSize(), CellSet.get("a1").getCellSize());
         Rook WRightRook = new Rook(CellSet.get("h1"), Size, true);
-        WRightRook.setBounds(CellSet.get("h1").getREAL_COORDINATES()[0], CellSet.get("h1").getREAL_COORDINATES()[1], CellSet.get("h1").getCellSize(), CellSet.get("h1").getCellSize());
+        //WRightRook.setBounds(CellSet.get("h1").getREAL_COORDINATES()[0], CellSet.get("h1").getREAL_COORDINATES()[1], CellSet.get("h1").getCellSize(), CellSet.get("h1").getCellSize());
 //      Black Rooks
         Rook BLeftRook = new Rook(CellSet.get("a8"), Size, false);
-        BLeftRook.setBounds(CellSet.get("a8").getREAL_COORDINATES()[0], CellSet.get("a8").getREAL_COORDINATES()[1], CellSet.get("a8").getCellSize(), CellSet.get("a8").getCellSize());
+        //BLeftRook.setBounds(CellSet.get("a8").getREAL_COORDINATES()[0], CellSet.get("a8").getREAL_COORDINATES()[1], CellSet.get("a8").getCellSize(), CellSet.get("a8").getCellSize());
         Rook BRightRook = new Rook(CellSet.get("h8"), Size, false);
-        BRightRook.setBounds(CellSet.get("h8").getREAL_COORDINATES()[0], CellSet.get("h8").getREAL_COORDINATES()[1], CellSet.get("h8").getCellSize(), CellSet.get("h8").getCellSize());
+        //BRightRook.setBounds(CellSet.get("h8").getREAL_COORDINATES()[0], CellSet.get("h8").getREAL_COORDINATES()[1], CellSet.get("h8").getCellSize(), CellSet.get("h8").getCellSize());
         getContentPane().add(WLeftRook);getContentPane().add(WRightRook);getContentPane().add(BLeftRook);getContentPane().add(BRightRook);
 
     }
@@ -70,7 +71,34 @@ public class ChessBoard extends JFrame{
     class DrawBoard extends JPanel {
 
         DrawBoard() {
+            removeAll();
             setLayout(null);
+
+            addMouseListener(new MouseAdapter() {
+                Cell RememberedCell;
+                AbstractFigure Figure;
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    System.out.println("Mouse pressed");
+                    Figure = determineCell(e.getX(), e.getY()).getOccupation();
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    if(Figure != null) {
+                        Cell FinalCell = determineCell(e.getX(), e.getY());
+                        System.out.println("x: "+ e.getX()+"  y: "+e.getY());
+                        if (FinalCell != null && FinalCell != RememberedCell) {
+                            Figure.move(FinalCell);
+                        }
+                        System.out.println("Mouse Released on cell: "+ FinalCell.getREAL_COORDINATES()[0]+" "+ FinalCell.getREAL_COORDINATES()[1]);
+                    }
+
+                }
+
+
+            });
 
         }
 
@@ -109,7 +137,7 @@ public class ChessBoard extends JFrame{
 
             }
 
-            //repaint();
+            repaint();
             DrawFigures();
 
 

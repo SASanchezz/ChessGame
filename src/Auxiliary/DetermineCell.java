@@ -10,11 +10,12 @@ public class DetermineCell {
         for (String cell: getCellSet().keySet()) {
             int Size = getCellSet().get(cell).getCellSize();
             int[] Coordinates = getCellSet().get(cell).getREAL_COORDINATES();
+            System.out.println("X:  "+X+"  Y: "+Y+"  Size: "+Size );
             if (X > Coordinates[0] && Y > Coordinates[1] && X < Coordinates[0] + Size && Y < Coordinates[1] + Size) {
+
                 return getCellSet().get(cell);
             }
         }
-
-
+        return null;
     }
 }

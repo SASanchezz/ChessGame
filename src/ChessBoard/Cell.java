@@ -1,10 +1,13 @@
 package ChessBoard;
 
 
+import Figures.AbstractFigure;
+
 public class Cell {
     private boolean Occupied = false;
     private int CellSize;
     private int[] REAL_COORDINATES = new int[2];
+    AbstractFigure Occupation;
 
     Cell(int x, int y, int Size) {
         this.REAL_COORDINATES[0] = x;
@@ -12,12 +15,19 @@ public class Cell {
         this.CellSize = Size;
     }
 
-    public boolean isOccupied() {
-        return Occupied;
+    public AbstractFigure getOccupation() {
+        return Occupation;
+    }
+
+    public void setOccupation(AbstractFigure occupation) {
+        Occupation = occupation;
     }
 
     public void setOccupied(boolean occupied) {
         Occupied = occupied;
+    }
+    public boolean getOccupied(boolean occupied) {
+        return Occupied;
     }
 
     public int getCellSize() {

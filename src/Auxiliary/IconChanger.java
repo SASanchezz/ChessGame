@@ -20,7 +20,6 @@ public class IconChanger {
 
         if (directoryListing != null) {
             for (File child : directoryListing) {
-                System.out.println(child.getName());
 
                 BufferedImage img = null;
                 try {
