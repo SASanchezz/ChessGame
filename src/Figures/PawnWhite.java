@@ -23,14 +23,26 @@ public class PawnWhite extends AbstractFigure{
     public ArrayList<Cell> AllowedMoves() {
         ArrayList<Cell> AllowedMoves = new ArrayList<>();
         String key = ActualCell.getBoardLoc();
-        if (key != null) {
+        if (!ActualCell.getBoardLoc().split("")[1].equals("8")) {
 
-            String CellAhead = key.charAt(0) + String.valueOf(((int) key.charAt(1) + 1));
-            //System.out.println("Cell ahead: " + CellAhead);
-            AllowedMoves.add(getCellSet().get(CellAhead));
+            String CellAhead = key.charAt(0) + Character.toString(key.charAt(1) + 1);
+
+            System.out.println("HERE " + getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)));
+            for (String child : getCellSet().keySet()) {
+                System.out.println(child + " - " + getCellSet().get(child));
+            }
+            System.out.println();
+            if (!getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupied()) {
+                AllowedMoves.add(getCellSet().get(CellAhead));
+            }
+            if (key.split("")[1].equals("2") && !getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupied()) {
+                CellAhead = key.charAt(0) + Character.toString(key.charAt(1) + 2);
+                AllowedMoves.add(getCellSet().get(CellAhead));
+
+            }
+
         }
-
-        return AllowedMoves;
+            return AllowedMoves;
     }
 
     public ArrayList AllowedHits(Cell cell) {

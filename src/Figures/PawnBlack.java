@@ -11,6 +11,9 @@ public class PawnBlack extends AbstractFigure {
 
     public PawnBlack(Cell SomeCell, int Size) {
         super(SomeCell);
+        ActualCell = SomeCell;
+        SomeCell.setOccupation(this);
+
         setIcon(iconChange(Size).get("BPawn.png"));
 
     }

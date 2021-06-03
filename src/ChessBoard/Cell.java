@@ -27,14 +27,16 @@ public class Cell {
     }
 
     public void setOccupation(AbstractFigure occupation) {
+        setOccupied(true);
         Occupation = occupation;
     }
 
     public void setOccupied(boolean occupied) {
+        if (!occupied) setOccupation(null);
         Occupied = occupied;
     }
 
-    public boolean getOccupied(boolean occupied) {
+    public boolean getOccupied() {
         return Occupied;
     }
 

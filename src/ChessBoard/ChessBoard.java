@@ -73,7 +73,6 @@ public class ChessBoard extends JFrame{
 
 
 
-
         }
         boolean DrawFiguresOnce = true;
         public void paintComponent (Graphics g) {
@@ -103,7 +102,10 @@ public class ChessBoard extends JFrame{
                         g2.setColor(Color.getHSBColor(1.40F, 0, 0.85F));
 
                     }
-                    CellSet.put(letters[j] + (9 - i), new Cell(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize, letters[j] + (9 - i)));
+                    if (DrawFiguresOnce) {
+                        CellSet.put(letters[j] + (9 - i), new Cell(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize, letters[j] + (9 - i)));
+
+                    }
                     //System.out.print(letters[j] + (9 - i)+";  ");
 
                     g2.fillRect(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize, CellSize);

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 
 public abstract class AbstractFigure extends JButton {
-    Cell SomeCell;
+
     Cell ActualCell;
     AbstractFigure Figure;
     int StartX;
@@ -23,9 +23,9 @@ public abstract class AbstractFigure extends JButton {
         setContentAreaFilled(false);
         setBorderPainted(false);
 
-        this.SomeCell = SomeCell;
         ActualCell = SomeCell;
         ActualCell.setOccupied(true);
+
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -42,9 +42,20 @@ public abstract class AbstractFigure extends JButton {
                 System.out.println("released: " + Figure.ActualCell +"  coords: " +e.getX()+" "+ e.getY());
                 if(Figure.ActualCell != null) {
                     String[] StartKey = Figure.ActualCell.getBoardLoc().split("");
+                    int xDifference;
+                    int yDifference;
+                    if (e.getX() > 0 ) {
+                        xDifference = (int) Math.floor(Math.abs(e.getX()/(double)Figure.ActualCell.getCellSize()));
+                    } else {
+                        xDifference = (int) -Math.ceil(Math.abs(e.getX()/(double)Figure.ActualCell.getCellSize()));
+                    } if (e.getY() > 0 ) {
+                        yDifference = (int) -Math.floor(Math.abs(e.getY()/(double)Figure.ActualCell.getCellSize()));
+                    } else {
+                        yDifference = (int) Math.ceil(Math.abs(e.getY()/(double)Figure.ActualCell.getCellSize()));
+                    }
 
-                    int xDifference = (int) Math.floor((e.getX() - StartX)/Figure.ActualCell.getCellSize());
-                    int yDifference = (int) Math.floor(-(e.getY() - StartY)/Figure.ActualCell.getCellSize());
+                    //System.out.println(xDifference+" "+ yDifference);
+
                     String FCell = Character.toString(StartKey[0].charAt(0) + xDifference) + ((Integer.parseInt(StartKey[1]) + yDifference));
                     System.out.println("Fcell:  "+FCell);
                     Cell FinalCell = CellSet.get(FCell);
