@@ -5,30 +5,24 @@ import ChessBoard.Cell;
 import static Auxiliary.IconChanger.iconChange;
 import static ChessBoard.ChessBoard.getCellSet;
 import java.util.ArrayList;
-import static Auxiliary.GetKey.getKey;
 
 public class PawnWhite extends AbstractFigure{
 
 
     public PawnWhite(Cell SomeCell, int Size) {
         super(SomeCell);
+        ActualCell = SomeCell;
+        SomeCell.setOccupation(this);
         setIcon(iconChange(Size).get("WPawn.png"));
     }
 
 
-    @Override
-    public void move (Cell toCell) {
-        if (AllowedMoves(toCell).contains(toCell)) {
-            this.ActualCell = toCell;
-        }
-
-    }
 
 
     @Override
-    public ArrayList AllowedMoves(Cell cell) {
+    public ArrayList<Cell> AllowedMoves() {
         ArrayList<Cell> AllowedMoves = new ArrayList<>();
-        String key = getKey(cell);
+        String key = ActualCell.getBoardLoc();
         if (key != null) {
 
             String CellAhead = key.charAt(0) + String.valueOf(((int) key.charAt(1) + 1));
@@ -41,7 +35,7 @@ public class PawnWhite extends AbstractFigure{
 
     public ArrayList AllowedHits(Cell cell) {
         ArrayList<Cell> AllowedHits = new ArrayList<>();
-        String key = getKey(cell);
+        String key = cell.getBoardLoc();
 
         if (key != null) {
 

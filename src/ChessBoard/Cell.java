@@ -4,16 +4,23 @@ package ChessBoard;
 import Figures.AbstractFigure;
 
 public class Cell {
+    private String BoardLoc;
     private boolean Occupied = false;
     private int CellSize;
     private int[] REAL_COORDINATES = new int[2];
     AbstractFigure Occupation;
 
-    Cell(int x, int y, int Size) {
+    Cell(int x, int y, int Size, String BoardLoc) {
         this.REAL_COORDINATES[0] = x;
         this.REAL_COORDINATES[1] = y;
         this.CellSize = Size;
+        this.BoardLoc = BoardLoc;
     }
+
+    public String getBoardLoc() {
+        return BoardLoc;
+    }
+
 
     public AbstractFigure getOccupation() {
         return Occupation;
@@ -26,6 +33,7 @@ public class Cell {
     public void setOccupied(boolean occupied) {
         Occupied = occupied;
     }
+
     public boolean getOccupied(boolean occupied) {
         return Occupied;
     }

@@ -5,7 +5,6 @@ import ChessBoard.Cell;
 import static Auxiliary.IconChanger.iconChange;
 import static ChessBoard.ChessBoard.getCellSet;
 import java.util.ArrayList;
-import static Auxiliary.GetKey.getKey;
 
 
 public class PawnBlack extends AbstractFigure {
@@ -18,7 +17,7 @@ public class PawnBlack extends AbstractFigure {
 
     @Override
     public void move (Cell toCell) {
-        if (AllowedMoves(toCell).contains(toCell)) {
+        if (AllowedMoves().contains(toCell)) {
             this.ActualCell = toCell;
         }
 
@@ -26,9 +25,9 @@ public class PawnBlack extends AbstractFigure {
 
 
     @Override
-    public ArrayList AllowedMoves(Cell cell) {
+    public ArrayList<Cell> AllowedMoves() {
         ArrayList<Cell> AllowedMoves = new ArrayList<>();
-        String key = getKey(cell);
+        String key = ActualCell.getBoardLoc();
         if (key != null) {
             String CellAhead = key.charAt(0) + String.valueOf(((int) key.charAt(1) - 1));
             //System.out.println("Cell ahead: " + CellAhead);
@@ -40,7 +39,7 @@ public class PawnBlack extends AbstractFigure {
 
     public ArrayList AllowedHits(Cell cell) {
         ArrayList<Cell> AllowedHits = new ArrayList<>();
-        String key = getKey(cell);
+        String key = cell.getBoardLoc();
         if (key != null) {
             if (key.charAt(0) != 'h') {
                 String CellRight = key.charAt(0)+1 + String.valueOf(((int) key.charAt(1) - 1));

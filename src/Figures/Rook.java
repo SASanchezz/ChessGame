@@ -21,16 +21,16 @@ public class Rook extends AbstractFigure {
 
     @Override
     public void move(Cell toCell) {
-        if (AllowedMoves(toCell).contains(toCell)) {
+        if (AllowedMoves().contains(toCell)) {
             this.ActualCell = toCell;
 
         }
     }
 
     @Override
-    public ArrayList AllowedMoves(Cell cell) {
+    public ArrayList<Cell> AllowedMoves() {
         ArrayList<Cell> AllowedMoves = new ArrayList<>();
-        String key = getKey(cell);
+        String key = ActualCell.getBoardLoc();
         if (key != null) {
 
             String CellAhead = key.charAt(0) + String.valueOf(((int) key.charAt(1) + 1));

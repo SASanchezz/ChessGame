@@ -1,6 +1,5 @@
 package ChessBoard;
 
-import Figures.AbstractFigure;
 import Figures.PawnBlack;
 import Figures.PawnWhite;
 import Figures.Rook;
@@ -10,14 +9,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 import static Auxiliary.DetermineCell.determineCell;
 
 public class ChessBoard extends JFrame{
-    private static HashMap<String, Cell> CellSet = new HashMap<>();
+    public static HashMap<String, Cell> CellSet = new HashMap<>();
     public static HashMap<String, Cell> getCellSet() {
         return CellSet;
     }
@@ -71,38 +68,16 @@ public class ChessBoard extends JFrame{
     class DrawBoard extends JPanel {
 
         DrawBoard() {
-            removeAll();
+
             setLayout(null);
 
-            addMouseListener(new MouseAdapter() {
-                Cell RememberedCell;
-                AbstractFigure Figure;
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    System.out.println("Mouse pressed");
-                    Figure = determineCell(e.getX(), e.getY()).getOccupation();
-
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    if(Figure != null) {
-                        Cell FinalCell = determineCell(e.getX(), e.getY());
-                        System.out.println("x: "+ e.getX()+"  y: "+e.getY());
-                        if (FinalCell != null && FinalCell != RememberedCell) {
-                            Figure.move(FinalCell);
-                        }
-                        System.out.println("Mouse Released on cell: "+ FinalCell.getREAL_COORDINATES()[0]+" "+ FinalCell.getREAL_COORDINATES()[1]);
-                    }
-
-                }
 
 
-            });
 
         }
-
+        boolean DrawFiguresOnce = true;
         public void paintComponent (Graphics g) {
+
             setBackground(Color.ORANGE);
 
             add(ExitButton());
@@ -115,7 +90,7 @@ public class ChessBoard extends JFrame{
             int WindowWidth = ChessBoard.this.getWidth();
             int CellSize = WindowHeight / 8;
 
-            System.out.println("gen width: " + WindowWidth + " Cell width: " + CellSize);
+            //System.out.println("gen width: " + WindowWidth + " Cell width: " + CellSize);
 
 
             setLayout(new GridLayout(8, 8));
@@ -128,7 +103,7 @@ public class ChessBoard extends JFrame{
                         g2.setColor(Color.getHSBColor(1.40F, 0, 0.85F));
 
                     }
-                    CellSet.put(letters[j] + (9 - i), new Cell(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize));
+                    CellSet.put(letters[j] + (9 - i), new Cell(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize, letters[j] + (9 - i)));
                     //System.out.print(letters[j] + (9 - i)+";  ");
 
                     g2.fillRect(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize, CellSize);
@@ -137,8 +112,11 @@ public class ChessBoard extends JFrame{
 
             }
 
+            if (DrawFiguresOnce) {
+                DrawFiguresOnce = false;
+                DrawFigures();
+            }
             repaint();
-            DrawFigures();
 
 
 

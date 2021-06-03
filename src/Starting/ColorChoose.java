@@ -21,7 +21,7 @@ public class ColorChoose extends JFrame {
         setVisible(true);
     }
 
-    private static class MyPanel extends JPanel {
+    private class MyPanel extends JPanel {
         public MyPanel() {
             add(Box.createRigidArea(new Dimension(0, 20)));
             add(Label1());
@@ -49,6 +49,8 @@ public class ColorChoose extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Config.COLOR = "WHITE";
+                    setVisible(false);
+                    dispose();
                     new ChessBoard();
                 }
             });
@@ -63,6 +65,8 @@ public class ColorChoose extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Config.COLOR = "BLACK";
+                    setVisible(false);
+                    dispose();
                     new ChessBoard();
                 }
             });
