@@ -5,7 +5,7 @@ import Figures.AbstractFigure;
 
 public class Cell {
     private String BoardLoc;
-    private boolean Occupied = false;
+    private String OccupiedBy = null;
     private int CellSize;
     private int[] REAL_COORDINATES = new int[2];
     AbstractFigure Occupation;
@@ -27,17 +27,20 @@ public class Cell {
     }
 
     public void setOccupation(AbstractFigure occupation) {
-        setOccupied(true);
+        if (occupation == null) {
+
+        } else setOccupiedBy(occupation.getColor());
+
         Occupation = occupation;
     }
 
-    public void setOccupied(boolean occupied) {
-        if (!occupied) setOccupation(null);
-        Occupied = occupied;
+    public void setOccupiedBy(String occupiedBy) {
+        if (occupiedBy == null) setOccupation(null);
+        this.OccupiedBy = occupiedBy;
     }
 
-    public boolean getOccupied() {
-        return Occupied;
+    public String getOccupiedBy() {
+        return OccupiedBy;
     }
 
     public int getCellSize() {

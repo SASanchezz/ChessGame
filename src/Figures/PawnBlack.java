@@ -9,10 +9,11 @@ import java.util.ArrayList;
 
 public class PawnBlack extends AbstractFigure {
 
-    public PawnBlack(Cell SomeCell, int Size) {
-        super(SomeCell);
+    public PawnBlack(Cell SomeCell, int Size, String Color) {
+        super(SomeCell, Color);
         ActualCell = SomeCell;
-        SomeCell.setOccupation(this);
+        ActualCell.setOccupation(this);
+        ActualCell.setOccupiedBy("Black");
 
         setIcon(iconChange(Size).get("BPawn.png"));
 

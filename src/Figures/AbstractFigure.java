@@ -1,7 +1,6 @@
 package Figures;
 
-import static Auxiliary.GetKey.getKey;
-import static ChessBoard.ChessBoard.CellSet;
+import static ChessBoard.ChessBoard.getCellSet;
 import ChessBoard.*;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -10,13 +9,13 @@ import java.util.ArrayList;
 
 
 public abstract class AbstractFigure extends JButton {
-
+    private String Color;
     Cell ActualCell;
     AbstractFigure Figure;
     int StartX;
     int StartY;
 
-    AbstractFigure(Cell SomeCell) {
+    AbstractFigure(Cell SomeCell, String Color) {
 
         setBounds(SomeCell.getREAL_COORDINATES()[0], SomeCell.getREAL_COORDINATES()[1], SomeCell.getCellSize(), SomeCell.getCellSize());
         setOpaque(false);
@@ -24,7 +23,7 @@ public abstract class AbstractFigure extends JButton {
         setBorderPainted(false);
 
         ActualCell = SomeCell;
-        ActualCell.setOccupied(true);
+        ActualCell.setOccupiedBy(Color);
 
 
         addMouseListener(new MouseAdapter() {
@@ -58,15 +57,11 @@ public abstract class AbstractFigure extends JButton {
 
                     String FCell = Character.toString(StartKey[0].charAt(0) + xDifference) + ((Integer.parseInt(StartKey[1]) + yDifference));
                     System.out.println("Fcell:  "+FCell);
-                    Cell FinalCell = CellSet.get(FCell);
+                    Cell FinalCell = getCellSet().get(FCell);
                     Figure.move(FinalCell);
                 }
-
             }
-
-
         });
-
     }
 
     public ArrayList<Cell> AllowedMoves() {
@@ -78,17 +73,22 @@ public abstract class AbstractFigure extends JButton {
     public void move (Cell toCell) {
         System.out.println("Moving...");
 
-//        for (Cell cell: AllowedMoves()) {
-//            System.out.println("key: "+cell.getBoardLoc());
-//        }
+
         if (AllowedMoves().contains(toCell)) {
             System.out.println("Real moving...");
-
-            ActualCell.setOccupied(false);
+            if (toCell != null && Color != toCell.getOccupiedBy()) {
+                toCell.getOccupation().setVisible(false);
+            }
+            getCellSet().get("a2").setOccupation(null);
+            ActualCell.setOccupiedBy(null);
             ActualCell = toCell;
-            ActualCell.setOccupied(true);
+            ActualCell.setOccupiedBy(Color);
             setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1], ActualCell.getCellSize(), ActualCell.getCellSize());
         }
 
+    }
+
+    public String getColor() {
+        return Color;
     }
 }

@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class Rook extends AbstractFigure {
 
-    public Rook(Cell SomeCell, int Size, boolean Color) {
-        super(SomeCell);
-        if (Color) {
+    public Rook(Cell SomeCell, int Size, String Color) {
+        super(SomeCell, Color);
+        if (Color == "White") {
             setIcon(iconChange(Size).get("WRook.png"));
         } else setIcon(iconChange(Size).get("BRook.png"));
 
@@ -33,9 +33,8 @@ public class Rook extends AbstractFigure {
         String key = ActualCell.getBoardLoc();
         if (key != null) {
 
-            String CellAhead = key.charAt(0) + String.valueOf(((int) key.charAt(1) + 1));
-            //System.out.println("Cell ahead: " + CellAhead);
-            AllowedMoves.add(getCellSet().get(CellAhead));
+
+            //AllowedMoves.add(getCellSet().get(CellAhead));
         }
 
         return AllowedMoves;

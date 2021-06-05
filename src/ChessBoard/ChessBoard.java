@@ -39,24 +39,24 @@ public class ChessBoard extends JFrame{
 //      White Pawns
         for (int i=0; i<8; i++) {
             Cell ItsCell = CellSet.get(letters[i]+2);
-            PawnWhite Pawn = new PawnWhite(ItsCell, Size);
+            PawnWhite Pawn = new PawnWhite(ItsCell, Size, "White");
             getContentPane().add(Pawn);
         }
 //      Black Pawns
         for (int i=0; i<8; i++) {
             Cell ItsCell = CellSet.get(letters[i]+7);
-            PawnBlack Pawn = new PawnBlack(ItsCell, Size);
+            PawnBlack Pawn = new PawnBlack(ItsCell, Size, "Black");
             getContentPane().add(Pawn);
         }
 //      White Rooks
-        Rook WLeftRook = new Rook(CellSet.get("a1"), Size, true);
+        Rook WLeftRook = new Rook(CellSet.get("a1"), Size, "White");
         //WLeftRook.setBounds(CellSet.get("a1").getREAL_COORDINATES()[0], CellSet.get("a1").getREAL_COORDINATES()[1], CellSet.get("a1").getCellSize(), CellSet.get("a1").getCellSize());
-        Rook WRightRook = new Rook(CellSet.get("h1"), Size, true);
+        Rook WRightRook = new Rook(CellSet.get("h1"), Size, "White");
         //WRightRook.setBounds(CellSet.get("h1").getREAL_COORDINATES()[0], CellSet.get("h1").getREAL_COORDINATES()[1], CellSet.get("h1").getCellSize(), CellSet.get("h1").getCellSize());
 //      Black Rooks
-        Rook BLeftRook = new Rook(CellSet.get("a8"), Size, false);
+        Rook BLeftRook = new Rook(CellSet.get("a8"), Size, "Black");
         //BLeftRook.setBounds(CellSet.get("a8").getREAL_COORDINATES()[0], CellSet.get("a8").getREAL_COORDINATES()[1], CellSet.get("a8").getCellSize(), CellSet.get("a8").getCellSize());
-        Rook BRightRook = new Rook(CellSet.get("h8"), Size, false);
+        Rook BRightRook = new Rook(CellSet.get("h8"), Size, "Black");
         //BRightRook.setBounds(CellSet.get("h8").getREAL_COORDINATES()[0], CellSet.get("h8").getREAL_COORDINATES()[1], CellSet.get("h8").getCellSize(), CellSet.get("h8").getCellSize());
         getContentPane().add(WLeftRook);getContentPane().add(WRightRook);getContentPane().add(BLeftRook);getContentPane().add(BRightRook);
 

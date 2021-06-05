@@ -7,16 +7,45 @@ import static ChessBoard.ChessBoard.getCellSet;
 import java.util.ArrayList;
 
 public class PawnWhite extends AbstractFigure{
+    String Color;
 
-
-    public PawnWhite(Cell SomeCell, int Size) {
-        super(SomeCell);
+    public PawnWhite(Cell SomeCell, int Size, String Color) {
+        super(SomeCell, Color);
         ActualCell = SomeCell;
-        SomeCell.setOccupation(this);
+        ActualCell.setOccupation(this);
+        ActualCell.setOccupiedBy("White");
         setIcon(iconChange(Size).get("WPawn.png"));
     }
 
 
+    @Override
+    public void move (Cell toCell) {
+        System.out.println("Moving...");
+
+
+        if (AllowedMoves().contains(toCell)) {
+            System.out.println("Real moving..."+ Color);
+            if (toCell != null && Color != toCell.getOccupiedBy()) {
+                toCell.getOccupation().setVisible(false);
+            }
+            getCellSet().get("a2").setOccupation(null);
+            ActualCell.setOccupiedBy(null);
+            ActualCell = toCell;
+            ActualCell.setOccupiedBy(Color);
+            setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1], ActualCell.getCellSize(), ActualCell.getCellSize());
+
+        } else if (AllowedHits().contains(toCell)) {
+            if (toCell != null && Color != toCell.getOccupiedBy()) {
+                toCell.getOccupation().setVisible(false);
+                getCellSet().get("a2").setOccupation(null);
+                ActualCell.setOccupiedBy(null);
+                ActualCell = toCell;
+                ActualCell.setOccupiedBy(Color);
+                setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1], ActualCell.getCellSize(), ActualCell.getCellSize());
+            }
+        }
+
+    }
 
 
     @Override
@@ -27,15 +56,10 @@ public class PawnWhite extends AbstractFigure{
 
             String CellAhead = key.charAt(0) + Character.toString(key.charAt(1) + 1);
 
-            System.out.println("HERE " + getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)));
-            for (String child : getCellSet().keySet()) {
-                System.out.println(child + " - " + getCellSet().get(child));
-            }
-            System.out.println();
-            if (!getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupied()) {
+            if (getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupiedBy() == null ) {
                 AllowedMoves.add(getCellSet().get(CellAhead));
             }
-            if (key.split("")[1].equals("2") && !getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupied()) {
+            if (key.split("")[1].equals("2") && getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupiedBy() == null) {
                 CellAhead = key.charAt(0) + Character.toString(key.charAt(1) + 2);
                 AllowedMoves.add(getCellSet().get(CellAhead));
 
@@ -45,20 +69,20 @@ public class PawnWhite extends AbstractFigure{
             return AllowedMoves;
     }
 
-    public ArrayList AllowedHits(Cell cell) {
+    public ArrayList AllowedHits() {
         ArrayList<Cell> AllowedHits = new ArrayList<>();
-        String key = cell.getBoardLoc();
+        String key = ActualCell.getBoardLoc();
 
         if (key != null) {
 
             if (key.charAt(0) != 'h') {
-                String CellRight = key.charAt(0)+1 + String.valueOf(((int) key.charAt(1) + 1));
-                //System.out.println("Cell Right: "+ CellRight);
+                String CellRight = Character.toString(key.charAt(0)+1) + Character.toString(key.charAt(1) + 1);
+                    System.out.println("Cell Right: "+ CellRight);
                 AllowedHits.add(getCellSet().get(CellRight));
             }
             if (key.charAt(0) != 'a') {
-                String CellLeft = key.charAt(0)-1 + String.valueOf(((int) key.charAt(1) + 1));
-                //System.out.println("Cell Left: "+ CellLeft);
+                String CellLeft = Character.toString(key.charAt(0)-1) + Character.toString(key.charAt(1) + 1);
+                System.out.println("Cell Left: "+ CellLeft);
                 AllowedHits.add(getCellSet().get(CellLeft));
             }
         }
