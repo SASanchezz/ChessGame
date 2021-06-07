@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import static Auxiliary.DetermineCell.determineCell;
 
 public class ChessBoard extends JFrame{
     public static HashMap<String, Cell> CellSet = new HashMap<>();
@@ -19,9 +18,13 @@ public class ChessBoard extends JFrame{
         return CellSet;
     }
 
-    String[] letters = {
+    private static String[] letters = {
             "a", "b", "c", "d", "e", "f", "g", "h"
     };
+    public static String[] getLetters() {
+        return letters;
+    }
+
 
     public ChessBoard() {
 
@@ -89,8 +92,6 @@ public class ChessBoard extends JFrame{
             int WindowWidth = ChessBoard.this.getWidth();
             int CellSize = WindowHeight / 8;
 
-            //System.out.println("gen width: " + WindowWidth + " Cell width: " + CellSize);
-
 
             setLayout(new GridLayout(8, 8));
 
@@ -106,10 +107,8 @@ public class ChessBoard extends JFrame{
                         CellSet.put(letters[j] + (9 - i), new Cell(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize, letters[j] + (9 - i)));
 
                     }
-                    //System.out.print(letters[j] + (9 - i)+";  ");
 
                     g2.fillRect(((WindowWidth / 4) - (CellSize / 2)) + (j * CellSize), (i - 1) * CellSize, CellSize, CellSize);
-                    //System.out.println((WindowWidth / 4) +"+"+ j * CellSize + " " + (i - 1) * CellSize + " " + CellSize + " " + CellSize);
                 }
 
             }

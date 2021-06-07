@@ -18,6 +18,7 @@ public class Cell {
     }
 
     public String getBoardLoc() {
+        if (BoardLoc == null) return "no";
         return BoardLoc;
     }
 

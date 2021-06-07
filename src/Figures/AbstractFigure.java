@@ -69,12 +69,14 @@ public abstract class AbstractFigure extends JButton {
     }
 
     public void move (Cell toCell) {
-        System.out.println("Moving...");
+        System.out.println(toCell.getBoardLoc());
+        System.out.println("Abstract move: "+getCellSet().get(toCell.getBoardLoc()).getOccupation() +" " + getCellSet().get(toCell.getBoardLoc()).getOccupiedBy()+" "+ Color);
 
         if (AllowedMoves().contains(toCell)) {
-            System.out.println("Real moving...");
             if (toCell != null && Color != toCell.getOccupiedBy()) {
-                toCell.getOccupation().setBounds(0,0,0,0);
+                if (toCell.getOccupation() != null) {
+                    toCell.getOccupation().setBounds(0,0,0,0);
+                }
             }
                 ActualCell.setOccupation(null);
                 ActualCell = toCell;

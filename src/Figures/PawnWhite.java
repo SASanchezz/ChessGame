@@ -20,10 +20,8 @@ public class PawnWhite extends AbstractFigure{
 
     @Override
     public void move (Cell toCell) {
-        System.out.println("Moving...");
 
         if (AllowedMoves().contains(toCell)) {
-            System.out.println("Real moving..."+ Color);
             ActualCell.setOccupation(null);
             ActualCell = toCell;
             ActualCell.setOccupiedBy(Color);
@@ -32,8 +30,6 @@ public class PawnWhite extends AbstractFigure{
 
         } else if (AllowedHits().contains(toCell)) {
             if (toCell.getOccupation() != null && Color != toCell.getOccupiedBy()) {
-                System.out.println("get occupation: "+toCell.getOccupation() + "  Color: " + Color + "  Occupied By: " + toCell.getOccupiedBy());
-                System.out.println(Color+" " + toCell.getOccupiedBy());
                 toCell.getOccupation().setBounds(0,0,0,0);
                 ActualCell.setOccupation(null);
                 ActualCell = toCell;
@@ -57,7 +53,9 @@ public class PawnWhite extends AbstractFigure{
             if (getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupiedBy() == null ) {
                 AllowedMoves.add(getCellSet().get(CellAhead));
             }
-            if (key.split("")[1].equals("2") && getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupiedBy() == null) {
+            if (key.split("")[1].equals("2") &&
+                    getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupation() == null &&
+                    getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 2)).getOccupation() == null) {
                 CellAhead = key.charAt(0) + Character.toString(key.charAt(1) + 2);
                 AllowedMoves.add(getCellSet().get(CellAhead));
 
@@ -75,7 +73,6 @@ public class PawnWhite extends AbstractFigure{
 
             if (key.charAt(0) != 'h') {
                 String CellRight = Character.toString(key.charAt(0)+1) + Character.toString(key.charAt(1) + 1);
-                System.out.println(CellRight);
                 AllowedHits.add(getCellSet().get(CellRight));
             }
             if (key.charAt(0) != 'a') {

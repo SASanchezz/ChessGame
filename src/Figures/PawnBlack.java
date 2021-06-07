@@ -22,11 +22,9 @@ public class PawnBlack extends AbstractFigure {
 
     @Override
     public void move (Cell toCell) {
-        System.out.println("Moving...");
 
 
         if (AllowedMoves().contains(toCell)) {
-            System.out.println("Real moving..."+ Color);
             if (toCell.getOccupation() != null && Color != toCell.getOccupiedBy()) {
                 toCell.getOccupation().setVisible(false);
             }
@@ -38,7 +36,6 @@ public class PawnBlack extends AbstractFigure {
 
         } else if (AllowedHits().contains(toCell)) {
             if (toCell != null && Color != toCell.getOccupiedBy()) {
-                System.out.println(Color+" " + toCell.getOccupiedBy());
 
                 toCell.getOccupation().setBounds(0,0,0,0);
                 ActualCell.setOccupation(null);
@@ -62,7 +59,9 @@ public class PawnBlack extends AbstractFigure {
             if (getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) - 1)).getOccupiedBy() == null ) {
                 AllowedMoves.add(getCellSet().get(CellAhead));
             }
-            if (key.split("")[1].equals("7") && getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupiedBy() == null) {
+            if (key.split("")[1].equals("7") &&
+                    getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) - 1)).getOccupation() == null &&
+                    getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) - 2)).getOccupation() == null) {
                 CellAhead = key.charAt(0) + Character.toString(key.charAt(1) - 2);
                 AllowedMoves.add(getCellSet().get(CellAhead));
             }
