@@ -7,7 +7,7 @@ import static ChessBoard.ChessBoard.getCellSet;
 import java.util.ArrayList;
 
 public class PawnWhite extends AbstractFigure{
-    String Color;
+    String Color = "White";
 
     public PawnWhite(Cell SomeCell, int Size, String Color) {
         super(SomeCell, Color);
@@ -22,29 +22,27 @@ public class PawnWhite extends AbstractFigure{
     public void move (Cell toCell) {
         System.out.println("Moving...");
 
-
         if (AllowedMoves().contains(toCell)) {
             System.out.println("Real moving..."+ Color);
-            if (toCell != null && Color != toCell.getOccupiedBy()) {
-                toCell.getOccupation().setVisible(false);
-            }
-            getCellSet().get("a2").setOccupation(null);
-            ActualCell.setOccupiedBy(null);
+            ActualCell.setOccupation(null);
             ActualCell = toCell;
             ActualCell.setOccupiedBy(Color);
+            ActualCell.setOccupation(this);
             setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1], ActualCell.getCellSize(), ActualCell.getCellSize());
 
         } else if (AllowedHits().contains(toCell)) {
-            if (toCell != null && Color != toCell.getOccupiedBy()) {
-                toCell.getOccupation().setVisible(false);
-                getCellSet().get("a2").setOccupation(null);
-                ActualCell.setOccupiedBy(null);
+            if (toCell.getOccupation() != null && Color != toCell.getOccupiedBy()) {
+                System.out.println("get occupation: "+toCell.getOccupation() + "  Color: " + Color + "  Occupied By: " + toCell.getOccupiedBy());
+                System.out.println(Color+" " + toCell.getOccupiedBy());
+                toCell.getOccupation().setBounds(0,0,0,0);
+                ActualCell.setOccupation(null);
                 ActualCell = toCell;
                 ActualCell.setOccupiedBy(Color);
-                setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1], ActualCell.getCellSize(), ActualCell.getCellSize());
+                ActualCell.setOccupation(this);
+                setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
+                        ActualCell.getCellSize(), ActualCell.getCellSize());
             }
         }
-
     }
 
 
@@ -77,16 +75,14 @@ public class PawnWhite extends AbstractFigure{
 
             if (key.charAt(0) != 'h') {
                 String CellRight = Character.toString(key.charAt(0)+1) + Character.toString(key.charAt(1) + 1);
-                    System.out.println("Cell Right: "+ CellRight);
+                System.out.println(CellRight);
                 AllowedHits.add(getCellSet().get(CellRight));
             }
             if (key.charAt(0) != 'a') {
                 String CellLeft = Character.toString(key.charAt(0)-1) + Character.toString(key.charAt(1) + 1);
-                System.out.println("Cell Left: "+ CellLeft);
                 AllowedHits.add(getCellSet().get(CellLeft));
             }
         }
-
         return AllowedHits;
     }
 }

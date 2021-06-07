@@ -27,15 +27,13 @@ public class Cell {
     }
 
     public void setOccupation(AbstractFigure occupation) {
-        if (occupation == null) {
-
+        if (occupation == null) { setOccupiedBy(null);
         } else setOccupiedBy(occupation.getColor());
-
         Occupation = occupation;
     }
 
     public void setOccupiedBy(String occupiedBy) {
-        if (occupiedBy == null) setOccupation(null);
+        if (occupiedBy == null);
         this.OccupiedBy = occupiedBy;
     }
 

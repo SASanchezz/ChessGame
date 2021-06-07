@@ -16,7 +16,7 @@ public abstract class AbstractFigure extends JButton {
     int StartY;
 
     AbstractFigure(Cell SomeCell, String Color) {
-
+        this.Color = Color;
         setBounds(SomeCell.getREAL_COORDINATES()[0], SomeCell.getREAL_COORDINATES()[1], SomeCell.getCellSize(), SomeCell.getCellSize());
         setOpaque(false);
         setContentAreaFilled(false);
@@ -24,7 +24,7 @@ public abstract class AbstractFigure extends JButton {
 
         ActualCell = SomeCell;
         ActualCell.setOccupiedBy(Color);
-
+        ActualCell.setOccupation(this);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -53,8 +53,6 @@ public abstract class AbstractFigure extends JButton {
                         yDifference = (int) Math.ceil(Math.abs(e.getY()/(double)Figure.ActualCell.getCellSize()));
                     }
 
-                    //System.out.println(xDifference+" "+ yDifference);
-
                     String FCell = Character.toString(StartKey[0].charAt(0) + xDifference) + ((Integer.parseInt(StartKey[1]) + yDifference));
                     System.out.println("Fcell:  "+FCell);
                     Cell FinalCell = getCellSet().get(FCell);
@@ -73,17 +71,17 @@ public abstract class AbstractFigure extends JButton {
     public void move (Cell toCell) {
         System.out.println("Moving...");
 
-
         if (AllowedMoves().contains(toCell)) {
             System.out.println("Real moving...");
             if (toCell != null && Color != toCell.getOccupiedBy()) {
-                toCell.getOccupation().setVisible(false);
+                toCell.getOccupation().setBounds(0,0,0,0);
             }
-            getCellSet().get("a2").setOccupation(null);
-            ActualCell.setOccupiedBy(null);
-            ActualCell = toCell;
-            ActualCell.setOccupiedBy(Color);
-            setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1], ActualCell.getCellSize(), ActualCell.getCellSize());
+                ActualCell.setOccupation(null);
+                ActualCell = toCell;
+                ActualCell.setOccupiedBy(Color);
+                ActualCell.setOccupation(this);
+            setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
+                    ActualCell.getCellSize(), ActualCell.getCellSize());
         }
 
     }
