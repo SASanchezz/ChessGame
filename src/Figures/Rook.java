@@ -35,7 +35,6 @@ public class Rook extends AbstractFigure {
 //            Up Move
         for (int i = Integer.parseInt(key[1])+1; i <= 8; i++) {
             String CellToAdd = key[0] + String.valueOf(i);
-            System.out.println("Up: "+getCellSet().get(CellToAdd).getOccupation() +" " + getCellSet().get(CellToAdd).getOccupiedBy()+" "+ Color);
             if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
                 if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
@@ -44,7 +43,6 @@ public class Rook extends AbstractFigure {
 //            Down Move
         for (int i = Integer.parseInt(key[1])-1; i >= 1; i--) {
             String CellToAdd = key[0] + String.valueOf(i);
-            System.out.println("Down    : "+getCellSet().get(CellToAdd).getOccupation() +" " + getCellSet().get(CellToAdd).getOccupiedBy()+" "+ Color);
             if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
                 if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
@@ -53,7 +51,6 @@ public class Rook extends AbstractFigure {
 //        Move Left
         for (int i = (key[0]).charAt(0)-97-1; i >= 0; i--) {
             String CellToAdd = getLetters()[i] + key[1];
-            System.out.println("Left    : "+getCellSet().get(CellToAdd).getOccupation() +" " + getCellSet().get(CellToAdd).getOccupiedBy()+" "+ Color);
             if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
                 if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
@@ -62,7 +59,6 @@ public class Rook extends AbstractFigure {
 //        Move Right
         for (int i = (key[0]).charAt(0)-97+1; i < 8; i++) {
             String CellToAdd = getLetters()[i] + key[1];
-            System.out.println("Right    : "+getCellSet().get(CellToAdd).getOccupation() +" " + getCellSet().get(CellToAdd).getOccupiedBy()+" "+ Color);
             if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
                 if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;

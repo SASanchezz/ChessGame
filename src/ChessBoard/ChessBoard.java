@@ -1,9 +1,11 @@
 package ChessBoard;
 
+import Starting.StartingMenu;
+
 import Figures.PawnBlack;
 import Figures.PawnWhite;
 import Figures.Rook;
-import Starting.StartingMenu;
+import Figures.Bishop;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,15 +55,19 @@ public class ChessBoard extends JFrame{
         }
 //      White Rooks
         Rook WLeftRook = new Rook(CellSet.get("a1"), Size, "White");
-        //WLeftRook.setBounds(CellSet.get("a1").getREAL_COORDINATES()[0], CellSet.get("a1").getREAL_COORDINATES()[1], CellSet.get("a1").getCellSize(), CellSet.get("a1").getCellSize());
         Rook WRightRook = new Rook(CellSet.get("h1"), Size, "White");
-        //WRightRook.setBounds(CellSet.get("h1").getREAL_COORDINATES()[0], CellSet.get("h1").getREAL_COORDINATES()[1], CellSet.get("h1").getCellSize(), CellSet.get("h1").getCellSize());
 //      Black Rooks
         Rook BLeftRook = new Rook(CellSet.get("a8"), Size, "Black");
-        //BLeftRook.setBounds(CellSet.get("a8").getREAL_COORDINATES()[0], CellSet.get("a8").getREAL_COORDINATES()[1], CellSet.get("a8").getCellSize(), CellSet.get("a8").getCellSize());
         Rook BRightRook = new Rook(CellSet.get("h8"), Size, "Black");
-        //BRightRook.setBounds(CellSet.get("h8").getREAL_COORDINATES()[0], CellSet.get("h8").getREAL_COORDINATES()[1], CellSet.get("h8").getCellSize(), CellSet.get("h8").getCellSize());
         getContentPane().add(WLeftRook);getContentPane().add(WRightRook);getContentPane().add(BLeftRook);getContentPane().add(BRightRook);
+
+//      White Bishop
+        Bishop WLeftBishop = new Bishop(CellSet.get("c1"), Size, "White");
+        Bishop WRightBishop = new Bishop(CellSet.get("f1"), Size, "White");
+//      Black Bishop
+        Bishop BLeftBishop = new Bishop(CellSet.get("c8"), Size, "Black");
+        Bishop BRightBishop = new Bishop(CellSet.get("f8"), Size, "Black");
+        getContentPane().add(WLeftBishop);getContentPane().add(WRightBishop);getContentPane().add(BLeftBishop);getContentPane().add(BRightBishop);
 
     }
 
