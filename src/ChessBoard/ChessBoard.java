@@ -2,10 +2,7 @@ package ChessBoard;
 
 import Starting.StartingMenu;
 
-import Figures.PawnBlack;
-import Figures.PawnWhite;
-import Figures.Rook;
-import Figures.Bishop;
+import Figures.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,6 +65,26 @@ public class ChessBoard extends JFrame{
         Bishop BLeftBishop = new Bishop(CellSet.get("c8"), Size, "Black");
         Bishop BRightBishop = new Bishop(CellSet.get("f8"), Size, "Black");
         getContentPane().add(WLeftBishop);getContentPane().add(WRightBishop);getContentPane().add(BLeftBishop);getContentPane().add(BRightBishop);
+
+//      White Knight
+        Knight WLeftKnight = new Knight(CellSet.get("b1"), Size, "White");
+        Knight WRightKnight = new Knight(CellSet.get("g1"), Size, "White");
+//      Black Knight
+        Knight BLeftKnight = new Knight(CellSet.get("b8"), Size, "Black");
+        Knight BRightKnight = new Knight(CellSet.get("g8"), Size, "Black");
+        getContentPane().add(WLeftKnight);getContentPane().add(WRightKnight);getContentPane().add(BLeftKnight);getContentPane().add(BRightKnight);
+
+//      White Queen
+        Queen WQueen = new Queen(CellSet.get("d1"), Size, "White");
+//      Black Queen
+        Queen BQueen = new Queen(CellSet.get("d8"), Size, "Black");
+        getContentPane().add(WQueen);getContentPane().add(BQueen);
+
+//      White King
+        King WKing = new King(CellSet.get("e1"), Size, "White");
+//      Black King
+        King BKing = new King(CellSet.get("e8"), Size, "Black");
+        getContentPane().add(WKing);getContentPane().add(BKing);
 
     }
 
