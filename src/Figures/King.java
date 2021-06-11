@@ -34,19 +34,19 @@ public class King extends AbstractFigure {
         ArrayList<String> StringSet = new ArrayList<>();
 
         StringSet.add(key[0]+ (Integer.parseInt(key[1]) + 1));
-        System.out.println("Uppercell of king: " + (key[0]+ (Integer.parseInt(key[1]) + 1)));
-        StringSet.add(key[0].charAt(0)+1 + String.valueOf(Integer.parseInt(key[1])+1));
-        StringSet.add(key[0].charAt(0)+1 + key[1]);
-        StringSet.add(key[0].charAt(0)+1 + String.valueOf(Integer.parseInt(key[1])-1));
+        StringSet.add(Character.toString(key[0].charAt(0)+1) + (Integer.parseInt(key[1]) + 1));
+        StringSet.add(Character.toString(key[0].charAt(0)+1) + key[1]);
+        StringSet.add(Character.toString(key[0].charAt(0)+1) + (Integer.parseInt(key[1]) - 1));
         StringSet.add(key[0] + (Integer.parseInt(key[1]) - 1));
-        StringSet.add(key[0].charAt(0)-1 + String.valueOf(Integer.parseInt(key[1])-1));
-        StringSet.add(key[0].charAt(0)-1 + key[1]);
-        StringSet.add(key[0].charAt(0)-1 + String.valueOf(Integer.parseInt(key[1])+1));
+        StringSet.add(Character.toString(key[0].charAt(0)-1) + (Integer.parseInt(key[1]) - 1));
+        StringSet.add(Character.toString(key[0].charAt(0)-1) + key[1]);
+        StringSet.add(Character.toString(key[0].charAt(0)-1) + (Integer.parseInt(key[1]) + 1));
 
-        for (int i=0; i<StringSet.size(); i++) {
-            Cell SpecificCell = getCellSet().get(StringSet.get(i));
-            if (SpecificCell != null) {
+        for (String s : StringSet) {
+            Cell SpecificCell = getCellSet().get(s);
+            if (SpecificCell != null && !ActualCell.getBoardLoc().equals(s)) {
                 LocalSet.add(SpecificCell);
+
             }
         }
         return LocalSet;
@@ -69,84 +69,45 @@ public class King extends AbstractFigure {
         String[] key = ActualCell.getBoardLoc().split("");
 
 //            Up Move
-        System.out.println(key[0] + (Integer.parseInt(key[1]) + 1));
-        if (key[1] != "8" && getCellSet().get(key[0] + (Integer.parseInt(key[1]) + 1)).getOccupiedBy() != (Color) &&
-                !IsKingNearby(key[0] + Integer.parseInt(key[1])) ) {
-            System.out.println("King moves");
+        if (!key[1].equals("8") && getCellSet().get(key[0] + (Integer.parseInt(key[1]) + 1)).getOccupiedBy() != (Color) &&
+                !IsKingNearby(key[0] + (Integer.parseInt(key[1])+1)) ) {
             AllowedMoves.add(getCellSet().get(key[0] + (Integer.parseInt(key[1]) + 1)));
         }
 //            Down Move
-        for (int i = Integer.parseInt(key[1])-1; i >= 1; i--) {
-            String CellToAdd = key[0] + String.valueOf(i);
-            if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
-                AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
-            } else break;
+        if (!key[1].equals("1") && getCellSet().get(key[0] + (Integer.parseInt(key[1]) - 1)).getOccupiedBy() != (Color) &&
+                !IsKingNearby(key[0] + (Integer.parseInt(key[1])-1)) ) {
+            AllowedMoves.add(getCellSet().get(key[0] + (Integer.parseInt(key[1]) - 1)));
         }
 //        Move Left
-        for (int i = (key[0]).charAt(0)-97-1; i >= 0; i--) {
-            String CellToAdd = getLetters()[i] + key[1];
-            if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
-                AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
-            } else break;
+        if (!key[0].equals("a") && getCellSet().get((Character.toString(key[0].charAt(0)-1)) + key[1]).getOccupiedBy() != (Color) &&
+                !IsKingNearby(Character.toString(key[0].charAt(0)-1) + key[1]) ) {
+            AllowedMoves.add(getCellSet().get(Character.toString(key[0].charAt(0)-1) + key[1]));
         }
 //        Move Right
-        for (int i = (key[0]).charAt(0)-97+1; i < 8; i++) {
-            String CellToAdd = getLetters()[i] + key[1];
-            if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
-                AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
-            } else break;
+        if (!key[0].equals("h") && getCellSet().get((Character.toString(key[0].charAt(0)+1)) + key[1]).getOccupiedBy() != (Color) &&
+                !IsKingNearby(Character.toString(key[0].charAt(0)+1) + key[1]) ) {
+            AllowedMoves.add(getCellSet().get(Character.toString(key[0].charAt(0)+1) + key[1]));
         }
 
 //           Up-Right Move
-        int sign = (key[0]).charAt(0)-97+1;
-        for (int num = Integer.parseInt(key[1])+1; num <= 8; num++) {
-            if (sign < 8) {
-                String CellToAdd = getLetters()[sign] + String.valueOf(num);
-                sign++;
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
-                    AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
-                } else break;
-            }
+        if (!key[0].equals("h") && !key[1].equals("8") && getCellSet().get((Character.toString(key[0].charAt(0)+1)) + (Integer.parseInt(key[1]) + 1)).getOccupiedBy() != (Color) &&
+                !IsKingNearby(Character.toString(key[0].charAt(0)+1) + (Integer.parseInt(key[1]) + 1)) ) {
+            AllowedMoves.add(getCellSet().get(Character.toString(key[0].charAt(0)+1) + (Integer.parseInt(key[1]) + 1)));
         }
 //          Down-Right Move
-        sign = (key[0]).charAt(0)-97+1;
-        for (int num = Integer.parseInt(key[1])-1; num >= 1; num--) {
-            if (sign < 8) {
-                String CellToAdd = getLetters()[sign] + String.valueOf(num);
-                sign++;
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
-                    AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
-                } else break;
-            }
+        if (!key[0].equals("h") && !key[1].equals("1") && getCellSet().get((Character.toString(key[0].charAt(0)+1)) + (Integer.parseInt(key[1]) - 1)).getOccupiedBy() != (Color) &&
+                !IsKingNearby(Character.toString(key[0].charAt(0)+1) + (Integer.parseInt(key[1]) - 1)) ) {
+            AllowedMoves.add(getCellSet().get(Character.toString(key[0].charAt(0)+1) + (Integer.parseInt(key[1]) - 1)));
         }
 //          Up-Left Move
-        sign = (key[0]).charAt(0)-97-1;
-        for (int num = Integer.parseInt(key[1])+1; num <= 8; num++) {
-            if (sign >= 0) {
-                String CellToAdd = getLetters()[sign] + String.valueOf(num);
-                sign--;
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
-                    AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
-                } else break;
-            }
+        if (!key[0].equals("a") && !key[1].equals("8") && getCellSet().get((Character.toString(key[0].charAt(0)-1)) + (Integer.parseInt(key[1]) + 1)).getOccupiedBy() != (Color) &&
+                !IsKingNearby(Character.toString(key[0].charAt(0)-1) + (Integer.parseInt(key[1]) + 1)) ) {
+            AllowedMoves.add(getCellSet().get(Character.toString(key[0].charAt(0)-1) + (Integer.parseInt(key[1]) + 1)));
         }
 //          Down-Left Move
-        sign = (key[0]).charAt(0)-97-1;
-        for (int num = Integer.parseInt(key[1])-1; num >= 1; num--) {
-            if (sign >= 0) {
-                String CellToAdd = getLetters()[sign] + String.valueOf(num);
-                sign--;
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
-                    AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
-                } else break;
-            }
+        if (!key[0].equals("a") && !key[1].equals("1") && getCellSet().get((Character.toString(key[0].charAt(0)-1)) + (Integer.parseInt(key[1]) - 1)).getOccupiedBy() != (Color) &&
+                !IsKingNearby(Character.toString(key[0].charAt(0)-1) + (Integer.parseInt(key[1]) - 1)) ) {
+            AllowedMoves.add(getCellSet().get(Character.toString(key[0].charAt(0)-1) + (Integer.parseInt(key[1]) - 1)));
         }
 
         return AllowedMoves;
