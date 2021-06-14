@@ -19,10 +19,10 @@ public class Rook extends AbstractFigure {
         ActualCell.setOccupation(this);
         this.Color = Color;
         if (Color.equals("White")) {
-            ActualCell.setOccupiedBy("White");
+            ActualCell.setOccupiedColor("White");
             setIcon(iconChange(Size).get("WRook.png"));
         } else {
-            ActualCell.setOccupiedBy("Black");
+            ActualCell.setOccupiedColor("Black");
             setIcon(iconChange(Size).get("BRook.png"));
         }
     }
@@ -32,36 +32,37 @@ public class Rook extends AbstractFigure {
     public ArrayList<Cell> AllowedMoves() {
         ArrayList<Cell> AllowedMoves = new ArrayList<>();
         String[] key = ActualCell.getBoardLoc().split("");
+
 //            Up Move
         for (int i = Integer.parseInt(key[1])+1; i <= 8; i++) {
             String CellToAdd = key[0] + String.valueOf(i);
-            if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
+            if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
+                if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
             } else break;
         }
 //            Down Move
         for (int i = Integer.parseInt(key[1])-1; i >= 1; i--) {
             String CellToAdd = key[0] + String.valueOf(i);
-            if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
+            if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
+                if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
             } else break;
         }
 //        Move Left
         for (int i = (key[0]).charAt(0)-97-1; i >= 0; i--) {
             String CellToAdd = getLetters()[i] + key[1];
-            if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
+            if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
+                if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
             } else break;
         }
 //        Move Right
         for (int i = (key[0]).charAt(0)-97+1; i < 8; i++) {
             String CellToAdd = getLetters()[i] + key[1];
-            if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
+            if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
+                if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
             } else break;
         }
 

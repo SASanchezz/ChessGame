@@ -18,10 +18,10 @@ public class Bishop extends AbstractFigure {
         ActualCell.setOccupation(this);
         this.Color = Color;
         if (Color.equals("White")) {
-            ActualCell.setOccupiedBy("White");
+            ActualCell.setOccupiedColor("White");
             setIcon(iconChange(Size).get("WBishop.png"));
         } else {
-            ActualCell.setOccupiedBy("Black");
+            ActualCell.setOccupiedColor("Black");
             setIcon(iconChange(Size).get("BBishop.png"));
         }
     }
@@ -37,12 +37,10 @@ public class Bishop extends AbstractFigure {
         for (int num = Integer.parseInt(key[1])+1; num <= 8; num++) {
             if (sign < 8) {
                 String CellToAdd = getLetters()[sign] + String.valueOf(num);
-                System.out.println(CellToAdd);
-                System.out.println("Up-Right: "+getCellSet().get(CellToAdd).getOccupation() +" " + getCellSet().get(CellToAdd).getOccupiedBy()+" "+ Color);
                 sign++;
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
+                if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                     AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
+                    if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
                 } else break;
             }
         }
@@ -51,12 +49,10 @@ public class Bishop extends AbstractFigure {
         for (int num = Integer.parseInt(key[1])-1; num >= 1; num--) {
             if (sign < 8) {
                 String CellToAdd = getLetters()[sign] + String.valueOf(num);
-                System.out.println(CellToAdd);
-                System.out.println("Down-Right: "+getCellSet().get(CellToAdd).getOccupation() +" " + getCellSet().get(CellToAdd).getOccupiedBy()+" "+ Color);
                 sign++;
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
+                if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                     AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
+                    if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
                 } else break;
             }
         }
@@ -65,12 +61,10 @@ public class Bishop extends AbstractFigure {
         for (int num = Integer.parseInt(key[1])+1; num <= 8; num++) {
             if (sign >= 0) {
                 String CellToAdd = getLetters()[sign] + String.valueOf(num);
-                System.out.println(CellToAdd);
-                System.out.println("Up-Left: "+getCellSet().get(CellToAdd).getOccupation() +" " + getCellSet().get(CellToAdd).getOccupiedBy()+" "+ Color);
                 sign--;
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
+                if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                     AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
+                    if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
                 } else break;
             }
         }
@@ -79,12 +73,10 @@ public class Bishop extends AbstractFigure {
         for (int num = Integer.parseInt(key[1])-1; num >= 1; num--) {
             if (sign >= 0) {
                 String CellToAdd = getLetters()[sign] + String.valueOf(num);
-                System.out.println(CellToAdd);
-                System.out.println("Down-Left: "+getCellSet().get(CellToAdd).getOccupation() +" " + getCellSet().get(CellToAdd).getOccupiedBy()+" "+ Color);
                 sign--;
-                if (getCellSet().get(CellToAdd).getOccupiedBy() != (Color)) {
+                if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                     AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedBy() != null) break;
+                    if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
                 } else break;
             }
         }

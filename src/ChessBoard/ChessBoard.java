@@ -8,14 +8,34 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
 public class ChessBoard extends JFrame{
-    public static HashMap<String, Cell> CellSet = new HashMap<>();
+    private static HashMap<String, Cell> CellSet = new HashMap<>();
     public static HashMap<String, Cell> getCellSet() {
         return CellSet;
     }
+
+    private static ArrayList<AbstractFigure> BlackFigures = new ArrayList<>();
+    private static ArrayList<AbstractFigure> WhiteFigures = new ArrayList<>();
+    public static ArrayList<AbstractFigure> getBlackFigures() {
+        return BlackFigures;
+    }
+    public static ArrayList<AbstractFigure> getWhiteFigures() {
+        return WhiteFigures;
+    }
+
+    public static void setBlackFigures(ArrayList<AbstractFigure> blackFigures) {
+        BlackFigures = blackFigures;
+    }
+    public static void setWhiteFigures(ArrayList<AbstractFigure> whiteFigures) {
+        WhiteFigures = whiteFigures;
+    }
+
+    public static King WKing;
+    public static King BKing;
 
     private static String[] letters = {
             "a", "b", "c", "d", "e", "f", "g", "h"
@@ -43,12 +63,14 @@ public class ChessBoard extends JFrame{
             Cell ItsCell = CellSet.get(letters[i]+2);
             PawnWhite Pawn = new PawnWhite(ItsCell, Size, "White");
             getContentPane().add(Pawn);
+            WhiteFigures.add(Pawn);
         }
 //      Black Pawns
         for (int i=0; i<8; i++) {
             Cell ItsCell = CellSet.get(letters[i]+7);
             PawnBlack Pawn = new PawnBlack(ItsCell, Size, "Black");
             getContentPane().add(Pawn);
+            BlackFigures.add(Pawn);
         }
 //      White Rooks
         Rook WLeftRook = new Rook(CellSet.get("a1"), Size, "White");
@@ -57,6 +79,9 @@ public class ChessBoard extends JFrame{
         Rook BLeftRook = new Rook(CellSet.get("a8"), Size, "Black");
         Rook BRightRook = new Rook(CellSet.get("h8"), Size, "Black");
         getContentPane().add(WLeftRook);getContentPane().add(WRightRook);getContentPane().add(BLeftRook);getContentPane().add(BRightRook);
+        WhiteFigures.add(WLeftRook); WhiteFigures.add(WRightRook);
+        BlackFigures.add(BLeftRook); BlackFigures.add(BRightRook);
+
 
 //      White Bishop
         Bishop WLeftBishop = new Bishop(CellSet.get("c1"), Size, "White");
@@ -65,6 +90,8 @@ public class ChessBoard extends JFrame{
         Bishop BLeftBishop = new Bishop(CellSet.get("c8"), Size, "Black");
         Bishop BRightBishop = new Bishop(CellSet.get("f8"), Size, "Black");
         getContentPane().add(WLeftBishop);getContentPane().add(WRightBishop);getContentPane().add(BLeftBishop);getContentPane().add(BRightBishop);
+        WhiteFigures.add(WLeftBishop); WhiteFigures.add(WRightBishop);
+        BlackFigures.add(BLeftBishop); BlackFigures.add(BRightBishop);
 
 //      White Knight
         Knight WLeftKnight = new Knight(CellSet.get("b1"), Size, "White");
@@ -73,31 +100,30 @@ public class ChessBoard extends JFrame{
         Knight BLeftKnight = new Knight(CellSet.get("b8"), Size, "Black");
         Knight BRightKnight = new Knight(CellSet.get("g8"), Size, "Black");
         getContentPane().add(WLeftKnight);getContentPane().add(WRightKnight);getContentPane().add(BLeftKnight);getContentPane().add(BRightKnight);
+        WhiteFigures.add(WLeftKnight); WhiteFigures.add(WRightKnight);
+        BlackFigures.add(BLeftKnight); BlackFigures.add(BRightKnight);
+
 
 //      White Queen
         Queen WQueen = new Queen(CellSet.get("d1"), Size, "White");
 //      Black Queen
         Queen BQueen = new Queen(CellSet.get("d8"), Size, "Black");
         getContentPane().add(WQueen);getContentPane().add(BQueen);
+        WhiteFigures.add(WQueen); BlackFigures.add(BQueen);
 
 //      White King
-        King WKing = new King(CellSet.get("e1"), Size, "White");
+        WKing = new King(CellSet.get("e1"), Size, "White");
 //      Black King
-        King BKing = new King(CellSet.get("e8"), Size, "Black");
+        BKing = new King(CellSet.get("e8"), Size, "Black");
         getContentPane().add(WKing);getContentPane().add(BKing);
-
+        //WhiteFigures.add(WKing); BlackFigures.add(BKing);
     }
-
-
 
 
     class DrawBoard extends JPanel {
 
         DrawBoard() {
-
             setLayout(null);
-
-
 
         }
         boolean DrawFiguresOnce = true;
