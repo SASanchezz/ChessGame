@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -52,11 +54,17 @@ public class ChessBoard extends JFrame{
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
         setContentPane(new DrawBoard());
+
         setVisible(true);
         repaint();
+
+
     }
 
+
+
     public void DrawFigures() {
+
         int Size = ChessBoard.this.getHeight()/8;
 //      White Pawns
         for (int i=0; i<8; i++) {
@@ -116,26 +124,30 @@ public class ChessBoard extends JFrame{
 //      Black King
         BKing = new King(CellSet.get("e8"), Size, "Black");
         getContentPane().add(WKing);getContentPane().add(BKing);
-        //WhiteFigures.add(WKing); BlackFigures.add(BKing);
     }
 
 
     class DrawBoard extends JPanel {
-
         DrawBoard() {
+
+
             setLayout(null);
 
         }
         boolean DrawFiguresOnce = true;
         public void paintComponent (Graphics g) {
+//            setBackground(Color.ORANGE);
 
-            setBackground(Color.ORANGE);
+
 
             add(ExitButton());
             add(ReturnButton());
 
             Graphics2D g2 = (Graphics2D) g;
             super.paintComponent(g);
+
+            ImageIcon background = new ImageIcon("images/background.jpg");
+            g2.drawImage(background.getImage(), 0, 0, null);
 
             int WindowHeight = ChessBoard.this.getHeight();
             int WindowWidth = ChessBoard.this.getWidth();

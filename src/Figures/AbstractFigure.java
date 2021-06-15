@@ -75,7 +75,6 @@ public abstract class AbstractFigure extends JButton {
         Cell OldCell = ActualCell;
         King MainKing = null;
         if (AllowedMoves().contains(toCell) ) {
-            // ((!BKing.isDangered() && Color.equals("Black")) || (!WKing.isDangered() && Color.equals("White")) )
             if (Color.equals("White") && WKing.isDangered()) {
                 MainKing = WKing;
             } else if (Color.equals("Black") && BKing.isDangered()) {
@@ -121,20 +120,75 @@ public abstract class AbstractFigure extends JButton {
             } else {
                 if (MainKing != null) MainKing.setDangered(false);
 
-                if (Color != toCell.getOccupiedColor()) {
-                    if (toCell.getOccupation() != null) {
-                        toCell.getOccupation().setBounds(0,0,0,0);
-
-                        getBlackFigures().remove(toCell.getOccupation());
-                        getWhiteFigures().remove(toCell.getOccupation());
-                    }
+                // Start implement check logic here
+                ArrayList<AbstractFigure> FoeFigureSet = null;
+                if (Color.equals("White")) {
+                    MainKing = WKing;
+                    FoeFigureSet = getBlackFigures();
+                } else if (Color.equals("Black")) {
+                    MainKing = BKing;
+                    FoeFigureSet = getWhiteFigures();
                 }
-                ActualCell.setOccupation(null);
-                ActualCell = toCell;
-                ActualCell.setOccupiedColor(Color);
-                ActualCell.setOccupation(this);
-                setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
-                        ActualCell.getCellSize(), ActualCell.getCellSize());
+                if(MainKing != null) {
+
+                    String OldColorKilled = toCell.getOccupiedColor();
+                    AbstractFigure OldFigureKilled = toCell.getOccupation();
+                    ActualCell.setOccupation(null);
+                    ActualCell = toCell;
+                    ActualCell.setOccupiedColor(Color);
+                    ActualCell.setOccupation(this);
+                    FoeFigureSet.remove(OldFigureKilled);
+
+                    boolean doNextAction = true;
+
+                    for (AbstractFigure figure: FoeFigureSet) {
+                        if(figure != null) {
+                            for (Cell AlCell: figure.AllowedMoves()) {
+                                if (AlCell.getOccupation() != null && Color == AlCell.getOccupiedColor() && AlCell.getOccupation().getClass().getName().equals("Figures.King")) {
+
+                                    ActualCell.setOccupation(OldFigureKilled);
+                                    ActualCell.setOccupiedColor(OldColorKilled);
+                                    ActualCell = OldCell;
+                                    ActualCell.setOccupiedColor(Color);
+                                    ActualCell.setOccupation(this);
+                                    doNextAction = false;
+                                }
+                            }
+                        }
+
+                    }
+                    System.out.println(doNextAction);
+                    if (doNextAction) {
+                        if (OldFigureKilled != null) {
+                            System.out.println("Is gonna kill" + OldFigureKilled);
+                            OldFigureKilled.setBounds(0, 0, 0, 0);
+                            FoeFigureSet.remove(OldFigureKilled);
+
+                        }
+                        setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
+                                ActualCell.getCellSize(), ActualCell.getCellSize());
+
+                    } else FoeFigureSet.add(OldFigureKilled);
+
+                }
+                // End
+
+                
+
+//                if (Color != toCell.getOccupiedColor()) {
+//                    if (toCell.getOccupation() != null) {
+//                        toCell.getOccupation().setBounds(0,0,0,0);
+//
+//                        getBlackFigures().remove(toCell.getOccupation());
+//                        getWhiteFigures().remove(toCell.getOccupation());
+//                    }
+//                }
+//                ActualCell.setOccupation(null);
+//                ActualCell = toCell;
+//                ActualCell.setOccupiedColor(Color);
+//                ActualCell.setOccupation(this);
+//                setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
+//                        ActualCell.getCellSize(), ActualCell.getCellSize());
             }
             for (Cell StepCell: AllowedMoves()) {
                 if (StepCell.getOccupation() != null) {
