@@ -235,7 +235,7 @@ public class King extends AbstractFigure {
         }
 
     public boolean isMate() {
-        if (CanBeEliminated()) return false;
+        if (CanBeEscaped()) return false;
         else {
             return true;
         }
@@ -244,10 +244,40 @@ public class King extends AbstractFigure {
 
 
     private boolean CanBeEscaped() {
-        for (Cell KingCell: AllowedMoves()) {
-            ;
+        ArrayList<Cell> CopyAllowedMoves = new ArrayList<>();
+        for (Cell copiedCell: AllowedMoves()) {
+            CopyAllowedMoves.add(copiedCell);
         }
-        return true;
+
+        for (int i=0; i<CopyAllowedMoves.size(); i++) {
+            Cell toCell = CopyAllowedMoves.get(i);
+            //remembering
+            Cell OldCell = ActualCell;
+            AbstractFigure KilledFigure = toCell.getOccupation();
+
+            ActualCell.setOccupation(null);
+            ActualCell = toCell;
+            ActualCell.setOccupation(this);
+
+            for (AbstractFigure FoeFigure: AllyFigureSet) {
+                if (FoeFigure.AllowedMoves().contains(ActualCell)) {
+                    CopyAllowedMoves.remove(ActualCell);
+//                    back move
+                    ActualCell.setOccupation(KilledFigure);
+                    ActualCell = OldCell;
+                    ActualCell.setOccupation(this);
+
+                    i = -1;
+                }
+            }
+        }
+        if (CopyAllowedMoves.size() == 0) {
+            System.out.println("King cannot be moved");
+            return false;
+        } else {
+            System.out.println("King can be moved");
+            return true;
+        }
     }
 
     private boolean CanBeEliminated() {
