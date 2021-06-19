@@ -6,24 +6,39 @@ import static ChessBoard.ChessBoard.getLetters;
 
 
 import ChessBoard.Cell;
+import Starting.Config;
 
 import java.util.ArrayList;
 
 
 public class Rook extends AbstractFigure {
-    String Color;
+    Boolean Color;
 
-    public Rook(Cell SomeCell, int Size, String Color) {
+    public Rook(Cell SomeCell, int Size, Boolean Color) {
         super(SomeCell, Color);
         ActualCell = SomeCell;
         ActualCell.setOccupation(this);
-        this.Color = Color;
-        if (Color.equals("White")) {
-            ActualCell.setOccupiedColor("White");
-            setIcon(iconChange(Size).get("WRook.png"));
+        if (Config.COLOR.equals("WHITE")) {
+            this.Color = Color;
+        } else this.Color = !Color;
+
+        if (Color) {
+            if (Config.COLOR.equals("WHITE")) {
+                ActualCell.setOccupiedColor(true);
+                setIcon(iconChange(Size).get("WRook.png"));
+            } else {
+                ActualCell.setOccupiedColor(false);
+                setIcon(iconChange(Size).get("BRook.png"));
+            }
+
         } else {
-            ActualCell.setOccupiedColor("Black");
-            setIcon(iconChange(Size).get("BRook.png"));
+            if (Config.COLOR.equals("BLACK")) {
+                ActualCell.setOccupiedColor(true);
+                setIcon(iconChange(Size).get("WRook.png"));
+            } else {
+                ActualCell.setOccupiedColor(false);
+                setIcon(iconChange(Size).get("BRook.png"));
+            }
         }
     }
 
@@ -38,7 +53,7 @@ public class Rook extends AbstractFigure {
             String CellToAdd = key[0] + String.valueOf(i);
             if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
+                if (getCellSet().get(CellToAdd).getOccupation() != null) break;
             } else break;
         }
 //            Down Move
@@ -46,7 +61,7 @@ public class Rook extends AbstractFigure {
             String CellToAdd = key[0] + String.valueOf(i);
             if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
+                if (getCellSet().get(CellToAdd).getOccupation() != null) break;
             } else break;
         }
 //        Move Left
@@ -54,7 +69,7 @@ public class Rook extends AbstractFigure {
             String CellToAdd = getLetters()[i] + key[1];
             if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
+                if (getCellSet().get(CellToAdd).getOccupation() != null) break;
             } else break;
         }
 //        Move Right
@@ -62,7 +77,7 @@ public class Rook extends AbstractFigure {
             String CellToAdd = getLetters()[i] + key[1];
             if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                 AllowedMoves.add(getCellSet().get(CellToAdd));
-                if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
+                if (getCellSet().get(CellToAdd).getOccupation() != null) break;
             } else break;
         }
 

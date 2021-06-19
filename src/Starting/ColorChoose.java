@@ -51,7 +51,7 @@ public class ColorChoose extends JFrame {
                     Config.COLOR = "WHITE";
                     setVisible(false);
                     dispose();
-                    new ChessBoard();
+                    Config.MAINBOARD = new ChessBoard();
                 }
             });
             return button;
@@ -67,7 +67,7 @@ public class ColorChoose extends JFrame {
                     Config.COLOR = "BLACK";
                     setVisible(false);
                     dispose();
-                    new ChessBoard();
+                    Config.MAINBOARD = new ChessBoard();
                 }
             });
             return button;

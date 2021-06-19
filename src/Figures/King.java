@@ -1,42 +1,81 @@
 package Figures;
 
-import static ChessBoard.ChessBoard.getCellSet;
-import static ChessBoard.ChessBoard.getBlackFigures;
-import static ChessBoard.ChessBoard.getWhiteFigures;
 import static Auxiliary.IconChanger.iconChange;
+import static ChessBoard.ChessBoard.*;
+import ChessBoard.Cell;
 
 
 import ChessBoard.Cell;
+import Starting.Config;
 
 import java.util.ArrayList;
 
 
 public class King extends AbstractFigure {
-    String Color;
-    private boolean Dangered;
+    boolean Mate = true;
+    Boolean FigureColor;
+    Boolean Color;
+    private Boolean Dangered;
     private AbstractFigure DangerFigure;
+    ArrayList<AbstractFigure> FoeFigureSet;
+    ArrayList<AbstractFigure> AllyFigureSet;
 
-    public King(Cell SomeCell, int Size, String Color) {
+
+    public King(Cell SomeCell, int Size, Boolean Color) {
         super(SomeCell, Color);
+
         Dangered = false;
         ActualCell = SomeCell;
         ActualCell.setOccupation(this);
-        this.Color = Color;
-        if (Color.equals("White")) {
-            ActualCell.setOccupiedColor("White");
-            setIcon(iconChange(Size).get("WKing.png"));
+        if (Config.COLOR.equals("WHITE")) {
+            this.Color = Color;
+        } else this.Color = !Color;
+
+
+        if (Color) {
+            if (Config.COLOR.equals("WHITE")) {
+                ActualCell.setOccupiedColor(true);
+                setIcon(iconChange(Size).get("WKing.png"));
+                FoeFigureSet = getBlackFigures();
+                AllyFigureSet = getWhiteFigures();
+            } else {
+                ActualCell.setOccupiedColor(false);
+                setIcon(iconChange(Size).get("BKing.png"));
+                FoeFigureSet = getWhiteFigures();
+                AllyFigureSet = getBlackFigures();
+            }
+
         } else {
-            ActualCell.setOccupiedColor("Black");
-            setIcon(iconChange(Size).get("BKing.png"));
+            if (Config.COLOR.equals("BLACK")) {
+                ActualCell.setOccupiedColor(true);
+                setIcon(iconChange(Size).get("WKing.png"));
+                FoeFigureSet = getBlackFigures();
+                AllyFigureSet = getWhiteFigures();
+            } else {
+                ActualCell.setOccupiedColor(false);
+                setIcon(iconChange(Size).get("BKing.png"));
+                FoeFigureSet = getWhiteFigures();
+                AllyFigureSet = getBlackFigures();
+
+            }
         }
+
     }
 
-    public boolean isDangered() {
+    public Boolean isDangered() {
+        System.out.println("dangered: "+Dangered);
+
         return Dangered;
     }
     @Override
-    public void setDangered(boolean dangered) {
+    public void setDangered(Boolean dangered) {
         Dangered = dangered;
+        if (Dangered) {
+            if (isMate()) {
+                Config.MAINBOARD.dispose();
+                Config.MAINBOARD.setVisible(false);
+            }
+        }
     }
 
     public AbstractFigure getDangerFigure() {
@@ -50,22 +89,25 @@ public class King extends AbstractFigure {
 
     @Override
     public void move (Cell toCell) {
-        System.out.println(toCell.getBoardLoc());
-        System.out.println("King move: "+getCellSet().get(toCell.getBoardLoc()).getOccupation() +" " + getCellSet().get(toCell.getBoardLoc()).getOccupiedColor()+" "+ Color);
-
         Cell OldCell = ActualCell;
+
+        if (Config.COLOR.equals("WHITE")) {
+            FigureColor = Figure.getColor();
+        } else {
+            FigureColor = !Figure.getColor();
+        }
+
 
         if (AllowedMoves().contains(toCell)) {
 
-            String OldColorKilled = toCell.getOccupiedColor();
+            Boolean OldColorKilled = toCell.getOccupiedColor();
             AbstractFigure OldFigureKilled = toCell.getOccupation();
             ActualCell.setOccupation(null);
             ActualCell = toCell;
             ActualCell.setOccupiedColor(Color);
             ActualCell.setOccupation(this);
 
-            if (DangerCheck() == true) {
-                System.out.println("Dangered");
+            if (DangerCheck(FoeFigureSet, ActualCell) == true) {
                 ActualCell.setOccupation(OldFigureKilled);
                 ActualCell.setOccupiedColor(OldColorKilled);
                 ActualCell = OldCell;
@@ -73,18 +115,19 @@ public class King extends AbstractFigure {
                 ActualCell.setOccupation(this);
 
             } else {
-                System.out.println("Safe");
-                System.out.println(Color+" "+OldColorKilled);
-                if (!Color.equals(OldColorKilled)) {
+                if (OldColorKilled != null && !Color == (OldColorKilled)) {
                     if (OldFigureKilled != null) {
-                        System.out.println("Is gonna kill" + OldFigureKilled);
                         OldFigureKilled.setBounds(0,0,0,0);
-                        getBlackFigures().remove(OldFigureKilled);
-                        getWhiteFigures().remove(OldFigureKilled);
+                        FoeFigureSet.remove(OldFigureKilled);
                     }
                 }
                 setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                         ActualCell.getCellSize(), ActualCell.getCellSize());
+                if (isWhiteToStep() && FigureColor) {
+                    setWhiteToStep(false);
+                } else if (!isWhiteToStep() && !FigureColor) {
+                    setWhiteToStep(true);
+                }
                 setDangered(false);
             }
         }
@@ -115,7 +158,7 @@ public class King extends AbstractFigure {
         return LocalSet;
     }
 
-    private boolean IsKingNearby(String NewCell) {
+    private Boolean IsKingNearby(String NewCell) {
         for (Cell cell: AroundZone(NewCell)) {
             if (cell.getOccupation() != null) {
                 if (cell.getOccupation().getClass().getName() == "Figures.King") {
@@ -177,29 +220,54 @@ public class King extends AbstractFigure {
         return AllowedMoves;
     }
 
-    private boolean DangerCheck() {
-        if (Color.equals("White")) {
-            System.out.println("White");
-            for (int bf=0; bf<getBlackFigures().size(); bf++) {
-                for (int j = 0; j < getBlackFigures().get(bf).AllowedMoves().size(); j++) {
-                    if (ActualCell.equals(getBlackFigures().get(bf).AllowedMoves().get(j))) {
-                        return true;
+    private Boolean DangerCheck(ArrayList<AbstractFigure> FoeSet, Cell SpecificCell) {
+                for (AbstractFigure FoeFigure: FoeSet){
+                    for (Cell FoeCell: FoeFigure.AllowedMoves()) {
+                        if (SpecificCell.equals(FoeCell)) {
+                            return true;
+                        }
                     }
                 }
-            }
 
-        } else if (Color.equals("Black")) {
-            System.out.println("Black");
-            for (int bf = 0; bf < getWhiteFigures().size(); bf++) {
-                for (int j = 0; j < getWhiteFigures().get(bf).AllowedMoves().size(); j++) {
-                    if (ActualCell.equals(getWhiteFigures().get(bf).AllowedMoves().get(j))) {
-                        return true;
-                    }
-                }
-            }
-        }
+
         return false;
+
+        }
+
+    public boolean isMate() {
+        if (! CheckForAroundZone()) return false;
+        else {
+            return true;
+        }
     }
 
+    private boolean CanBeEliminated() {
+        for (AbstractFigure AllyFigure: AllyFigureSet) {
+            for (Cell AllyCell: AllyFigure.AllowedMoves()) {
+
+            }
+        }
+        return true;
+    }
+
+    private boolean CheckForAroundZone() {
+        System.out.println("Dangered by: "+ DangerFigure);
+        ArrayList<Cell> CopyAllowedMoves = new ArrayList<>();
+        for (Cell copiedCell: AllowedMoves()) {
+            CopyAllowedMoves.add(copiedCell);
+        }
+
+
+        for (int i=0; i<CopyAllowedMoves.size(); i++) {
+            Cell KingCell = CopyAllowedMoves.get(i);
+            if (DangerCheck(FoeFigureSet, KingCell)) {
+                CopyAllowedMoves.remove(KingCell);
+                System.out.println("deleted: "+KingCell.getBoardLoc());
+                i=-1;
+            }
+        }
+        if (CopyAllowedMoves.size() > 0)return false;
+        else return true;
+    }
 
 }

@@ -1,6 +1,7 @@
 package Figures;
 
 import ChessBoard.Cell;
+import Starting.Config;
 
 import java.util.ArrayList;
 
@@ -10,19 +11,32 @@ import static ChessBoard.ChessBoard.getLetters;
 
 
 public class Knight extends AbstractFigure {
-    String Color;
+    Boolean Color;
 
-    public Knight(Cell SomeCell, int Size, String Color) {
+    public Knight(Cell SomeCell, int Size, Boolean Color) {
         super(SomeCell, Color);
         ActualCell = SomeCell;
         ActualCell.setOccupation(this);
-        this.Color = Color;
-        if (Color.equals("White")) {
-            ActualCell.setOccupiedColor("White");
-            setIcon(iconChange(Size).get("WKnight.png"));
+        if (Config.COLOR.equals("WHITE")) {
+            this.Color = Color;
+        } else this.Color = !Color;
+        if (Color) {
+            if (Config.COLOR.equals("WHITE")) {
+                ActualCell.setOccupiedColor(true);
+                setIcon(iconChange(Size).get("WKnight.png"));
+            } else {
+                ActualCell.setOccupiedColor(false);
+                setIcon(iconChange(Size).get("BKnight.png"));
+            }
+
         } else {
-            ActualCell.setOccupiedColor("Black");
-            setIcon(iconChange(Size).get("BKnight.png"));
+            if (Config.COLOR.equals("BLACK")) {
+                ActualCell.setOccupiedColor(true);
+                setIcon(iconChange(Size).get("WKnight.png"));
+            } else {
+                ActualCell.setOccupiedColor(false);
+                setIcon(iconChange(Size).get("BKnight.png"));
+            }
         }
     }
 

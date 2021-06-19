@@ -4,44 +4,78 @@ import ChessBoard.Cell;
 
 import static Auxiliary.IconChanger.iconChange;
 import static ChessBoard.ChessBoard.*;
+import Starting.Config;
 
 import java.util.ArrayList;
 
 public class PawnWhite extends AbstractFigure{
-    String Color = "White";
+    Boolean FigureColor;
+    Boolean Color;
 
-    public PawnWhite(Cell SomeCell, int Size, String Color) {
+
+    public PawnWhite(Cell SomeCell, int Size, Boolean Color) {
         super(SomeCell, Color);
+        if (Config.COLOR.equals("WHITE")) {
+            this.Color = Color;
+        } else this.Color = !Color;
+
         ActualCell = SomeCell;
         ActualCell.setOccupation(this);
-        ActualCell.setOccupiedColor("White");
-        setIcon(iconChange(Size).get("WPawn.png"));
+        if (Config.COLOR.equals("WHITE")) {
+            ActualCell.setOccupiedColor(true);
+            setIcon(iconChange(Size).get("WPawn.png"));
+        } else {
+            ActualCell.setOccupiedColor(false);
+            setIcon(iconChange(Size).get("BPawn.png"));
+        }
     }
 
 
     @Override
     public void move (Cell toCell) {
+        System.out.println("King is dangered: "+ WKing.isDangered()+" or "+ BKing.isDangered());
         King MainKing = null;
         Cell OldCell = ActualCell;
+
+        if (Config.COLOR.equals("WHITE")) {
+            FigureColor = getColor();
+        } else {
+            FigureColor = !getColor();
+        }
+        ArrayList<AbstractFigure> FoeFigureSet = null;
+
+        //Start
+        if (Config.COLOR.equals("WHITE")) {
+            FoeFigureSet = getBlackFigures();
+        } else {
+            FoeFigureSet = getWhiteFigures();
+        }
 
         if (UpdatedAllowedMoves().contains(toCell) && (
                 !(toCell.getBoardLoc().charAt(0) != ActualCell.getBoardLoc().charAt(0)) ||
                         (toCell.getBoardLoc().charAt(0) != ActualCell.getBoardLoc().charAt(0) && Color != toCell.getOccupiedColor() && toCell.getOccupation() != null)
         )) {
 
-            if (Color.equals("White") && WKing.isDangered()) {
-                MainKing = WKing;
+            if (Config.COLOR.equals("WHITE")){
+                if (Color && WKing.isDangered()) {
+                    MainKing = WKing;
+                }
+            } else {
+                if (!Color && BKing.isDangered()) {
+                    MainKing = BKing;
+                }
             }
+
             if (MainKing != null && toCell != MainKing.getDangerFigure().getActualCell()) {
 
-                String OldColorKilled = toCell.getOccupiedColor();
+                Boolean OldColorKilled = toCell.getOccupiedColor();
                 AbstractFigure OldFigureKilled = toCell.getOccupation();
                 ActualCell.setOccupation(null);
                 ActualCell = toCell;
                 ActualCell.setOccupiedColor(Color);
                 ActualCell.setOccupation(this);
 
-                boolean doNextAction = true;
+                Boolean doNextAction = true;
                 for (Cell StepCell : MainKing.getDangerFigure().AllowedMoves()) {
                     if (StepCell.getOccupation() != null) {
                         if (StepCell.getOccupation().getClass().getName().equals("Figures.King")) {
@@ -54,6 +88,7 @@ public class PawnWhite extends AbstractFigure{
                         }
                     }
                 }
+                System.out.println("Do next action white pawn: "+ doNextAction);
                 if (doNextAction) {
                     if (OldFigureKilled != null) {
                         OldFigureKilled.setBounds(0, 0, 0, 0);
@@ -63,6 +98,11 @@ public class PawnWhite extends AbstractFigure{
 
                     setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                             ActualCell.getCellSize(), ActualCell.getCellSize());
+                    if (isWhiteToStep() && FigureColor) {
+                        setWhiteToStep(false);
+                    } else if (!isWhiteToStep() && !FigureColor) {
+                        setWhiteToStep(true);
+                    }
                     MainKing.setDangered(false);
 
                 }
@@ -71,15 +111,8 @@ public class PawnWhite extends AbstractFigure{
             } else {
                 if (MainKing != null) MainKing.setDangered(false);
 
-//            Start implementation here
-                ArrayList<AbstractFigure> FoeFigureSet = null;
 
-                MainKing = WKing;
-                FoeFigureSet = getBlackFigures();
-
-                if (MainKing != null) {
-
-                    String OldColorKilled = toCell.getOccupiedColor();
+                    Boolean OldColorKilled = toCell.getOccupiedColor();
                     AbstractFigure OldFigureKilled = toCell.getOccupation();
                     ActualCell.setOccupation(null);
                     ActualCell = toCell;
@@ -87,7 +120,7 @@ public class PawnWhite extends AbstractFigure{
                     ActualCell.setOccupation(this);
                     FoeFigureSet.remove(OldFigureKilled);
 
-                    boolean doNextAction = true;
+                    Boolean doNextAction = true;
                     for (AbstractFigure figure : FoeFigureSet) {
                         if(figure != null) {
                             for (Cell AlCell : figure.AllowedMoves()) {
@@ -112,9 +145,14 @@ public class PawnWhite extends AbstractFigure{
                         }
                         setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                                 ActualCell.getCellSize(), ActualCell.getCellSize());
+                        if (isWhiteToStep() && FigureColor) {
+                            setWhiteToStep(false);
+                        } else if (!isWhiteToStep() && !FigureColor) {
+                            setWhiteToStep(true);
+                        }
                     } else FoeFigureSet.add(OldFigureKilled);
 
-                }
+
             }
         }
 //            Finish
@@ -201,7 +239,7 @@ public class PawnWhite extends AbstractFigure{
 
             String CellAhead = key.charAt(0) + Character.toString(key.charAt(1) + 1);
 
-            if (getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupiedColor() == null ) {
+            if (getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupation() == null ) {
                 AllowedMoves.add(getCellSet().get(CellAhead));
             }
             if (key.split("")[1].equals("2") &&

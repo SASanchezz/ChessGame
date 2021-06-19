@@ -1,6 +1,7 @@
 package Figures;
 
 import ChessBoard.Cell;
+import Starting.Config;
 
 import java.util.ArrayList;
 
@@ -10,19 +11,33 @@ import static ChessBoard.ChessBoard.getLetters;
 
 
 public class Bishop extends AbstractFigure {
-    String Color;
+    Boolean Color;
 
-    public Bishop(Cell SomeCell, int Size, String Color) {
+    public Bishop(Cell SomeCell, int Size, Boolean Color) {
         super(SomeCell, Color);
         ActualCell = SomeCell;
         ActualCell.setOccupation(this);
-        this.Color = Color;
-        if (Color.equals("White")) {
-            ActualCell.setOccupiedColor("White");
-            setIcon(iconChange(Size).get("WBishop.png"));
+        if (Config.COLOR.equals("WHITE")) {
+            this.Color = Color;
+        } else this.Color = !Color;
+
+        if (Color) {
+            if (Config.COLOR.equals("WHITE")) {
+                ActualCell.setOccupiedColor(true);
+                setIcon(iconChange(Size).get("WBishop.png"));
+            } else {
+                ActualCell.setOccupiedColor(false);
+                setIcon(iconChange(Size).get("BBishop.png"));
+            }
+
         } else {
-            ActualCell.setOccupiedColor("Black");
-            setIcon(iconChange(Size).get("BBishop.png"));
+            if (Config.COLOR.equals("BLACK")) {
+                ActualCell.setOccupiedColor(true);
+                setIcon(iconChange(Size).get("WBishop.png"));
+            } else {
+                ActualCell.setOccupiedColor(false);
+                setIcon(iconChange(Size).get("BBishop.png"));
+            }
         }
     }
 
@@ -40,7 +55,7 @@ public class Bishop extends AbstractFigure {
                 sign++;
                 if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                     AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
+                    if (getCellSet().get(CellToAdd).getOccupation() != null) break;
                 } else break;
             }
         }
@@ -52,7 +67,7 @@ public class Bishop extends AbstractFigure {
                 sign++;
                 if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                     AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
+                    if (getCellSet().get(CellToAdd).getOccupation() != null) break;
                 } else break;
             }
         }
@@ -64,7 +79,7 @@ public class Bishop extends AbstractFigure {
                 sign--;
                 if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                     AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
+                    if (getCellSet().get(CellToAdd).getOccupation() != null) break;
                 } else break;
             }
         }
@@ -76,7 +91,7 @@ public class Bishop extends AbstractFigure {
                 sign--;
                 if (getCellSet().get(CellToAdd).getOccupiedColor() != (Color)) {
                     AllowedMoves.add(getCellSet().get(CellToAdd));
-                    if (getCellSet().get(CellToAdd).getOccupiedColor() != null) break;
+                    if (getCellSet().get(CellToAdd).getOccupation() != null) break;
                 } else break;
             }
         }
