@@ -72,8 +72,8 @@ public class King extends AbstractFigure {
         Dangered = dangered;
         if (Dangered) {
             if (isMate()) {
-                Config.MAINBOARD.dispose();
-                Config.MAINBOARD.setVisible(false);
+//                Config.MAINBOARD.dispose();
+//                Config.MAINBOARD.setVisible(false);
             }
         }
     }
@@ -235,19 +235,57 @@ public class King extends AbstractFigure {
         }
 
     public boolean isMate() {
-        if (! CheckForAroundZone()) return false;
+        if (CanBeEliminated()) return false;
         else {
             return true;
         }
     }
 
-    private boolean CanBeEliminated() {
-        for (AbstractFigure AllyFigure: AllyFigureSet) {
-            for (Cell AllyCell: AllyFigure.AllowedMoves()) {
 
-            }
+
+    private boolean CanBeEscaped() {
+        for (Cell KingCell: AllowedMoves()) {
+            ;
         }
         return true;
+    }
+
+    private boolean CanBeEliminated() {
+        for (AbstractFigure AllyFigure: AllyFigureSet) {
+            for (Cell AllyCell : AllyFigure.AllowedMoves()) {
+                if (DangerFigure.equals(AllyCell.getOccupation())) {
+                    System.out.println();
+                    System.out.println("Can be eliminated not by king!");
+                    System.out.println();
+                    return true;
+                }
+            }
+        }
+        if (AroundZone(ActualCell.getBoardLoc()).contains(DangerFigure.getActualCell())) {
+            System.out.println("It's around king");
+            for (AbstractFigure FoeFigure: FoeFigureSet) {
+                    for (Cell FoeCell: FoeFigure.AllowedMoves()) {
+                        if (FoeCell.equals(DangerFigure.getActualCell()) ) {
+                            System.out.println();
+                            System.out.println("Cannot be eliminated around king :c");
+                            System.out.println();
+                            return false;
+                        }
+                    }
+                }
+            System.out.println();
+            System.out.println("Can be eliminated by KING !");
+            System.out.println();
+            return true;
+        }
+
+        System.out.println();
+        System.out.println("Cannot be eliminated at all :c");
+        System.out.println();
+        return false;
+
+
+
     }
 
     private boolean CheckForAroundZone() {
