@@ -7,7 +7,11 @@ import ChessBoard.Cell;
 
 import ChessBoard.Cell;
 import Starting.Config;
+import Starting.StartingMenu;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
@@ -32,51 +36,41 @@ public class King extends AbstractFigure {
         } else this.Color = !Color;
 
 
-        if (Color) {
-            if (Config.COLOR.equals("WHITE")) {
-                ActualCell.setOccupiedColor(true);
-                setIcon(iconChange(Size).get("WKing.png"));
-                FoeFigureSet = getBlackFigures();
-                AllyFigureSet = getWhiteFigures();
-            } else {
-                ActualCell.setOccupiedColor(false);
-                setIcon(iconChange(Size).get("BKing.png"));
-                FoeFigureSet = getWhiteFigures();
-                AllyFigureSet = getBlackFigures();
-            }
-
+        if (this.Color) {
+            setIcon(iconChange(Size).get("WKing.png"));
+            FoeFigureSet = getBlackFigures();
+            AllyFigureSet = getWhiteFigures();
         } else {
-            if (Config.COLOR.equals("BLACK")) {
-                ActualCell.setOccupiedColor(true);
-                setIcon(iconChange(Size).get("WKing.png"));
-                FoeFigureSet = getBlackFigures();
-                AllyFigureSet = getWhiteFigures();
-            } else {
-                ActualCell.setOccupiedColor(false);
-                setIcon(iconChange(Size).get("BKing.png"));
-                FoeFigureSet = getWhiteFigures();
-                AllyFigureSet = getBlackFigures();
-
+            setIcon(iconChange(Size).get("BKing.png"));
+            FoeFigureSet = getWhiteFigures();
+            AllyFigureSet = getBlackFigures();
             }
-        }
+
 
     }
 
     public Boolean isDangered() {
-        System.out.println("dangered: "+Dangered);
-
         return Dangered;
     }
     @Override
     public void setDangered(Boolean dangered) {
+        String message;
+        if (Color) message = "African Americans won!!!";
+        else message = "White won!!!";
         Dangered = dangered;
         if (Dangered) {
             if (isMate()) {
-//                Config.MAINBOARD.dispose();
-//                Config.MAINBOARD.setVisible(false);
+                JOptionPane.showMessageDialog(Config.MAINBOARD,
+                        message);
+                new StartingMenu();
+                Config.MAINBOARD.dispose();
+                Config.MAINBOARD.setVisible(false);
+            }
+
+
             }
         }
-    }
+
 
     public AbstractFigure getDangerFigure() {
         return DangerFigure;
@@ -123,11 +117,8 @@ public class King extends AbstractFigure {
                 }
                 setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                         ActualCell.getCellSize(), ActualCell.getCellSize());
-                if (isWhiteToStep() && FigureColor) {
-                    setWhiteToStep(false);
-                } else if (!isWhiteToStep() && !FigureColor) {
-                    setWhiteToStep(true);
-                }
+                setWhiteToStep(!isWhiteToStep());
+
                 setDangered(false);
             }
         }
@@ -235,47 +226,49 @@ public class King extends AbstractFigure {
         }
 
     public boolean isMate() {
-        if (CanBeEscaped()) return false;
-        else {
-            return true;
-        }
+        if (CanBeEscaped() || CanBeEliminated()) return false;
+        else return true;
     }
 
 
 
     private boolean CanBeEscaped() {
-        ArrayList<Cell> CopyAllowedMoves = new ArrayList<>();
-        for (Cell copiedCell: AllowedMoves()) {
-            CopyAllowedMoves.add(copiedCell);
-        }
+        ArrayList<Cell> CopyAllowedMoves = new ArrayList<>(AllowedMoves());
 
         for (int i=0; i<CopyAllowedMoves.size(); i++) {
+
             Cell toCell = CopyAllowedMoves.get(i);
+
             //remembering
             Cell OldCell = ActualCell;
             AbstractFigure KilledFigure = toCell.getOccupation();
 
-            ActualCell.setOccupation(null);
-            ActualCell = toCell;
-            ActualCell.setOccupation(this);
 
-            for (AbstractFigure FoeFigure: AllyFigureSet) {
-                if (FoeFigure.AllowedMoves().contains(ActualCell)) {
-                    CopyAllowedMoves.remove(ActualCell);
+            for (AbstractFigure FoeFigure: FoeFigureSet) {
+                ActualCell.setOccupation(null);
+                ActualCell = toCell;
+                ActualCell.setOccupation(this);
+                if (FoeFigure.AllowedMoves().contains(this.ActualCell)) {
+                    System.out.println("removed: "+ ActualCell + "  by figure: "+ FoeFigure);
+                    CopyAllowedMoves.remove(this.ActualCell);
 //                    back move
-                    ActualCell.setOccupation(KilledFigure);
-                    ActualCell = OldCell;
-                    ActualCell.setOccupation(this);
-
                     i = -1;
                 }
+                ActualCell.setOccupation(KilledFigure);
+                ActualCell = OldCell;
+                ActualCell.setOccupation(this);
             }
         }
         if (CopyAllowedMoves.size() == 0) {
             System.out.println("King cannot be moved");
             return false;
         } else {
+            System.out.println();
+
             System.out.println("King can be moved");
+            System.out.println(CopyAllowedMoves);
+            System.out.println();
+
             return true;
         }
     }
@@ -291,23 +284,23 @@ public class King extends AbstractFigure {
                 }
             }
         }
-        if (AroundZone(ActualCell.getBoardLoc()).contains(DangerFigure.getActualCell())) {
-            System.out.println("It's around king");
-            for (AbstractFigure FoeFigure: FoeFigureSet) {
-                    for (Cell FoeCell: FoeFigure.AllowedMoves()) {
-                        if (FoeCell.equals(DangerFigure.getActualCell()) ) {
-                            System.out.println();
-                            System.out.println("Cannot be eliminated around king :c");
-                            System.out.println();
-                            return false;
-                        }
-                    }
-                }
-            System.out.println();
-            System.out.println("Can be eliminated by KING !");
-            System.out.println();
-            return true;
-        }
+//        if (AroundZone(ActualCell.getBoardLoc()).contains(DangerFigure.getActualCell())) {
+//            System.out.println("It's around king");
+//            for (AbstractFigure FoeFigure: FoeFigureSet) {
+//                    for (Cell FoeCell: FoeFigure.AllowedMoves()) {
+//                        if (FoeCell.equals(DangerFigure.getActualCell()) ) {
+//                            System.out.println();
+//                            System.out.println("Cannot be eliminated around king :c");
+//                            System.out.println();
+//                            return false;
+//                        }
+//                    }
+//                }
+//            System.out.println();
+//            System.out.println("Can be eliminated by KING !");
+//            System.out.println();
+//            return true;
+//        }
 
         System.out.println();
         System.out.println("Cannot be eliminated at all :c");

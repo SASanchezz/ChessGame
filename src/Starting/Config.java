@@ -1,10 +1,13 @@
 package Starting;
 
+import Bot.Bot;
 import ChessBoard.ChessBoard;
 
 public class Config {
     static public String COLOR = "WHITE";
-    static public String GAME_TYPE = "1 vs 1";
+    static public Boolean BOT = false;
     static public ChessBoard MAINBOARD;
+
+
 
 }

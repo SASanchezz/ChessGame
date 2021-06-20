@@ -9,7 +9,6 @@ import Starting.Config;
 import java.util.ArrayList;
 
 public class PawnWhite extends AbstractFigure{
-    Boolean FigureColor;
     Boolean Color;
 
 
@@ -22,10 +21,8 @@ public class PawnWhite extends AbstractFigure{
         ActualCell = SomeCell;
         ActualCell.setOccupation(this);
         if (Config.COLOR.equals("WHITE")) {
-            ActualCell.setOccupiedColor(true);
             setIcon(iconChange(Size).get("WPawn.png"));
         } else {
-            ActualCell.setOccupiedColor(false);
             setIcon(iconChange(Size).get("BPawn.png"));
         }
     }
@@ -37,11 +34,7 @@ public class PawnWhite extends AbstractFigure{
         King MainKing = null;
         Cell OldCell = ActualCell;
 
-        if (Config.COLOR.equals("WHITE")) {
-            FigureColor = getColor();
-        } else {
-            FigureColor = !getColor();
-        }
+
         ArrayList<AbstractFigure> FoeFigureSet = null;
 
         //Start
@@ -72,7 +65,6 @@ public class PawnWhite extends AbstractFigure{
                 AbstractFigure OldFigureKilled = toCell.getOccupation();
                 ActualCell.setOccupation(null);
                 ActualCell = toCell;
-                ActualCell.setOccupiedColor(Color);
                 ActualCell.setOccupation(this);
 
                 Boolean doNextAction = true;
@@ -82,13 +74,11 @@ public class PawnWhite extends AbstractFigure{
                             ActualCell.setOccupation(OldFigureKilled);
                             ActualCell.setOccupiedColor(OldColorKilled);
                             ActualCell = OldCell;
-                            ActualCell.setOccupiedColor(Color);
                             ActualCell.setOccupation(this);
                             doNextAction = false;
                         }
                     }
                 }
-                System.out.println("Do next action white pawn: "+ doNextAction);
                 if (doNextAction) {
                     if (OldFigureKilled != null) {
                         OldFigureKilled.setBounds(0, 0, 0, 0);
@@ -98,11 +88,8 @@ public class PawnWhite extends AbstractFigure{
 
                     setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                             ActualCell.getCellSize(), ActualCell.getCellSize());
-                    if (isWhiteToStep() && FigureColor) {
-                        setWhiteToStep(false);
-                    } else if (!isWhiteToStep() && !FigureColor) {
-                        setWhiteToStep(true);
-                    }
+                    setWhiteToStep(!isWhiteToStep());
+
                     MainKing.setDangered(false);
 
                 }
@@ -116,7 +103,6 @@ public class PawnWhite extends AbstractFigure{
                     AbstractFigure OldFigureKilled = toCell.getOccupation();
                     ActualCell.setOccupation(null);
                     ActualCell = toCell;
-                    ActualCell.setOccupiedColor(Color);
                     ActualCell.setOccupation(this);
                     FoeFigureSet.remove(OldFigureKilled);
 
@@ -129,7 +115,6 @@ public class PawnWhite extends AbstractFigure{
                                     ActualCell.setOccupation(OldFigureKilled);
                                     ActualCell.setOccupiedColor(OldColorKilled);
                                     ActualCell = OldCell;
-                                    ActualCell.setOccupiedColor(Color);
                                     ActualCell.setOccupation(this);
                                     doNextAction = false;
                                 }
@@ -145,11 +130,8 @@ public class PawnWhite extends AbstractFigure{
                         }
                         setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                                 ActualCell.getCellSize(), ActualCell.getCellSize());
-                        if (isWhiteToStep() && FigureColor) {
-                            setWhiteToStep(false);
-                        } else if (!isWhiteToStep() && !FigureColor) {
-                            setWhiteToStep(true);
-                        }
+                        setWhiteToStep(!isWhiteToStep());
+
                     } else FoeFigureSet.add(OldFigureKilled);
 
 
@@ -161,46 +143,6 @@ public class PawnWhite extends AbstractFigure{
 
 
 
-//    public ArrayList<Cell> AllowedMovesReal() {
-//        ArrayList<Cell> AllowedHitsLIE = new ArrayList<>();
-//        String key = ActualCell.getBoardLoc();
-//        if (!ActualCell.getBoardLoc().split("")[1].equals("8")) {
-//
-//            String CellAhead = key.charAt(0) + Character.toString(key.charAt(1) + 1);
-//
-//            if (getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupiedColor() == null ) {
-//                AllowedHitsLIE.add(getCellSet().get(CellAhead));
-//            }
-//            if (key.split("")[1].equals("2") &&
-//                    getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupation() == null &&
-//                    getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 2)).getOccupation() == null) {
-//                CellAhead = key.charAt(0) + Character.toString(key.charAt(1) + 2);
-//                AllowedHitsLIE.add(getCellSet().get(CellAhead));
-//
-//            }
-//
-//        }
-//            return AllowedHitsLIE;
-//    }
-
-//    @Override
-//    public ArrayList AllowedMoves() {
-//        ArrayList<Cell> AllowedMoves = new ArrayList<>();
-//        String key = ActualCell.getBoardLoc();
-//
-//        if (key != null) {
-//
-//            if (key.charAt(0) != 'h') {
-//                String CellRight = Character.toString(key.charAt(0)+1) + Character.toString(key.charAt(1) + 1);
-//                AllowedMoves.add(getCellSet().get(CellRight));
-//            }
-//            if (key.charAt(0) != 'a') {
-//                String CellLeft = Character.toString(key.charAt(0)-1) + Character.toString(key.charAt(1) + 1);
-//                AllowedMoves.add(getCellSet().get(CellLeft));
-//            }
-//        }
-//        return AllowedMoves;
-//    }
 
     @Override
     public ArrayList<Cell> AllowedMoves() {

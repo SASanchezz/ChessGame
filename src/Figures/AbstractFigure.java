@@ -8,12 +8,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import static Auxiliary.IconChanger.iconChange;
+import static Bot.Bot.RandomMover;
 import static ChessBoard.ChessBoard.*;
 
 
 public abstract class AbstractFigure extends JButton {
-    Boolean FigureColor;
     private Boolean Color;
     Cell ActualCell;
     AbstractFigure Figure;
@@ -32,8 +31,8 @@ public abstract class AbstractFigure extends JButton {
         setBorderPainted(false);
 
         ActualCell = SomeCell;
-        ActualCell.setOccupiedColor(Color);
         ActualCell.setOccupation(this);
+
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -47,39 +46,45 @@ public abstract class AbstractFigure extends JButton {
             public void mouseReleased(MouseEvent e) {
                 System.out.println();
                 System.out.println();
-                System.out.println("previous cell: " + Figure.ActualCell);
-                if(Figure.ActualCell != null) {
-                    String[] StartKey = Figure.ActualCell.getBoardLoc().split("");
+                System.out.println("previous cell: " + ActualCell);
+                if(ActualCell != null) {
+                    String[] StartKey = ActualCell.getBoardLoc().split("");
                     int xDifference;
                     int yDifference;
                     if (e.getX() > 0 ) {
-                        xDifference = (int) Math.floor(Math.abs(e.getX()/(double)Figure.ActualCell.getCellSize()));
+                        xDifference = (int) Math.floor(Math.abs(e.getX()/(double)ActualCell.getCellSize()));
                     } else {
-                        xDifference = (int) -Math.ceil(Math.abs(e.getX()/(double)Figure.ActualCell.getCellSize()));
+                        xDifference = (int) -Math.ceil(Math.abs(e.getX()/(double)ActualCell.getCellSize()));
                     } if (e.getY() > 0 ) {
-                        yDifference = (int) -Math.floor(Math.abs(e.getY()/(double)Figure.ActualCell.getCellSize()));
+                        yDifference = (int) -Math.floor(Math.abs(e.getY()/(double)ActualCell.getCellSize()));
                     } else {
-                        yDifference = (int) Math.ceil(Math.abs(e.getY()/(double)Figure.ActualCell.getCellSize()));
+                        yDifference = (int) Math.ceil(Math.abs(e.getY()/(double)ActualCell.getCellSize()));
                     }
 
                     String FCell = Character.toString(StartKey[0].charAt(0) + xDifference) + ((Integer.parseInt(StartKey[1]) + yDifference));
                     Cell FinalCell = getCellSet().get(FCell);
 
-                    System.out.println("White to step: "+isWhiteToStep());
-                    if (Config.COLOR.equals("WHITE")) {
-                        FigureColor = Figure.getColor();
-                    } else {
-                        FigureColor = !Figure.getColor();
-                    }
-                    if (isWhiteToStep() && FigureColor) {
-                        Figure.move(FinalCell);
-                    } else if (!isWhiteToStep() && !FigureColor) {
-                        Figure.move(FinalCell);
+                    System.out.println("White to step: "+isWhiteToStep() + "   and color: "+ Figure.Color);
+
+                    boolean ConfigColor = Config.COLOR.equals("WHITE");
+
+
+                    if (isWhiteToStep() && Figure.Color && !Config.BOT) {
+                        move(FinalCell);
+                    } else if (!isWhiteToStep() && !Figure.Color && !Config.BOT) {
+                        move(FinalCell);
+                    } else if (Figure.Color == ConfigColor && Config.BOT) {
+                        move(FinalCell);
+                        RandomMover();
                     }
                 }
             }
         });
     }
+
+
+
+
 
     public ArrayList<Cell> AllowedMoves() {
         ArrayList<Cell> AllowedMoves = new ArrayList<>();
@@ -101,18 +106,9 @@ public abstract class AbstractFigure extends JButton {
             }
             ArrayList<AbstractFigure> FoeFigureSet = null;
             if (Color) {
-                if (Config.COLOR.equals("WHITE")) {
                     FoeFigureSet = getBlackFigures();
-                } else {
-                    FoeFigureSet = getWhiteFigures();
-                }
-
             } else {
-                if (Config.COLOR.equals("BLACK")) {
-                    FoeFigureSet = getBlackFigures();
-                } else {
                     FoeFigureSet = getWhiteFigures();
-                }
             }
 
             if(MainKing != null && toCell != MainKing.getDangerFigure().getActualCell()) {
@@ -135,7 +131,6 @@ public abstract class AbstractFigure extends JButton {
                             ActualCell.setOccupation(OldFigureKilled);
                             ActualCell.setOccupiedColor(OldColorKilled);
                             ActualCell = OldCell;
-                            ActualCell.setOccupiedColor(Color);
                             ActualCell.setOccupation(this);
                             doNextAction = false;
                         }
@@ -149,11 +144,7 @@ public abstract class AbstractFigure extends JButton {
 
                     setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                         ActualCell.getCellSize(), ActualCell.getCellSize());
-                    if (isWhiteToStep() && FigureColor) {
-                        setWhiteToStep(false);
-                    } else if (!isWhiteToStep() && !FigureColor) {
-                        setWhiteToStep(true);
-                    }
+                    setWhiteToStep(!isWhiteToStep());
                     MainKing.setDangered(false);
 
                 }
@@ -166,7 +157,6 @@ public abstract class AbstractFigure extends JButton {
                     AbstractFigure OldFigureKilled = toCell.getOccupation();
                     ActualCell.setOccupation(null);
                     ActualCell = toCell;
-                    ActualCell.setOccupiedColor(Color);
                     ActualCell.setOccupation(this);
                     FoeFigureSet.remove(OldFigureKilled);
 
@@ -180,7 +170,6 @@ public abstract class AbstractFigure extends JButton {
                                     ActualCell.setOccupation(OldFigureKilled);
                                     ActualCell.setOccupiedColor(OldColorKilled);
                                     ActualCell = OldCell;
-                                    ActualCell.setOccupiedColor(Color);
                                     ActualCell.setOccupation(this);
                                     doNextAction = false;
                                 }
@@ -188,7 +177,6 @@ public abstract class AbstractFigure extends JButton {
                         }
 
                     }
-                    System.out.println("Do next action: "+doNextAction);
                     if (doNextAction) {
                         if (OldFigureKilled != null) {
                             OldFigureKilled.setBounds(0, 0, 0, 0);
@@ -197,11 +185,8 @@ public abstract class AbstractFigure extends JButton {
                         }
                         setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                                 ActualCell.getCellSize(), ActualCell.getCellSize());
-                        if (isWhiteToStep() && FigureColor) {
-                            setWhiteToStep(false);
-                        } else if (!isWhiteToStep() && !FigureColor) {
-                            setWhiteToStep(true);
-                        }
+                        setWhiteToStep(!isWhiteToStep());
+
 
                     } else FoeFigureSet.add(OldFigureKilled);
 
@@ -235,5 +220,11 @@ public abstract class AbstractFigure extends JButton {
     }
     public Cell getActualCell() {
         return ActualCell;
+    }
+
+    @Override
+    public String toString() {
+        return Color + " " + getClass().getName().split("\\.")[1];
+
     }
 }

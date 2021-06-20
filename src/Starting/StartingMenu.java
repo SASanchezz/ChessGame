@@ -46,7 +46,7 @@ public class StartingMenu extends JFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Config.GAME_TYPE = "1 vs 1";
+                Config.BOT = false;
                 setVisible(false);
                 dispose();
                 new ColorChoose();
@@ -64,7 +64,7 @@ public class StartingMenu extends JFrame {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Config.GAME_TYPE = "1 vs PC";
+                    Config.BOT = true;
                     setVisible(false);
                     dispose();
                     new ColorChoose();

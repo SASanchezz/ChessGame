@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 
 public class PawnBlack extends AbstractFigure {
-    Boolean FigureColor;
     Boolean Color ;
 
 
@@ -23,10 +22,8 @@ public class PawnBlack extends AbstractFigure {
         ActualCell = SomeCell;
         ActualCell.setOccupation(this);
         if (Config.COLOR.equals("BLACK")) {
-            ActualCell.setOccupiedColor(true);
             setIcon(iconChange(Size).get("WPawn.png"));
         } else {
-            ActualCell.setOccupiedColor(false);
             setIcon(iconChange(Size).get("BPawn.png"));
         }
 
@@ -38,11 +35,7 @@ public class PawnBlack extends AbstractFigure {
         King MainKing = null;
         Cell OldCell = ActualCell;
 
-        if (Config.COLOR.equals("WHITE")) {
-            FigureColor = Figure.getColor();
-        } else {
-            FigureColor = !Figure.getColor();
-        }
+
         ArrayList<AbstractFigure> FoeFigureSet = null;
 
         //Start
@@ -74,7 +67,6 @@ public class PawnBlack extends AbstractFigure {
                 AbstractFigure OldFigureKilled = toCell.getOccupation();
                 ActualCell.setOccupation(null);
                 ActualCell = toCell;
-                ActualCell.setOccupiedColor(Color);
                 ActualCell.setOccupation(this);
 
                 Boolean doNextAction = true;
@@ -82,9 +74,7 @@ public class PawnBlack extends AbstractFigure {
                     if (StepCell.getOccupation() != null) {
                         if (StepCell.getOccupation().getClass().getName().equals("Figures.King")) {
                             ActualCell.setOccupation(OldFigureKilled);
-                            ActualCell.setOccupiedColor(OldColorKilled);
                             ActualCell = OldCell;
-                            ActualCell.setOccupiedColor(Color);
                             ActualCell.setOccupation(this);
                             doNextAction = false;
                         }
@@ -99,11 +89,8 @@ public class PawnBlack extends AbstractFigure {
                     setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                             ActualCell.getCellSize(), ActualCell.getCellSize());
 
-                    if (isWhiteToStep() && FigureColor) {
-                        setWhiteToStep(false);
-                    } else if (!isWhiteToStep() && !FigureColor) {
-                        setWhiteToStep(true);
-                    }
+                    setWhiteToStep(!isWhiteToStep());
+
                     MainKing.setDangered(false);
 
                 }
@@ -122,7 +109,6 @@ public class PawnBlack extends AbstractFigure {
                     AbstractFigure OldFigureKilled = toCell.getOccupation();
                     ActualCell.setOccupation(null);
                     ActualCell = toCell;
-                    ActualCell.setOccupiedColor(Color);
                     ActualCell.setOccupation(this);
                     FoeFigureSet.remove(OldFigureKilled);
 
@@ -135,7 +121,6 @@ public class PawnBlack extends AbstractFigure {
                                     ActualCell.setOccupation(OldFigureKilled);
                                     ActualCell.setOccupiedColor(OldColorKilled);
                                     ActualCell = OldCell;
-                                    ActualCell.setOccupiedColor(Color);
                                     ActualCell.setOccupation(this);
                                     doNextAction = false;
                                 }
@@ -152,11 +137,8 @@ public class PawnBlack extends AbstractFigure {
                         setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                                 ActualCell.getCellSize(), ActualCell.getCellSize());
 
-                        if (isWhiteToStep() && FigureColor) {
-                            setWhiteToStep(false);
-                        } else if (!isWhiteToStep() && !FigureColor) {
-                            setWhiteToStep(true);
-                        }
+                        setWhiteToStep(!isWhiteToStep());
+
                     } else FoeFigureSet.add(OldFigureKilled);
 
 

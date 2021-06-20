@@ -1,5 +1,6 @@
 package ChessBoard;
 
+import Bot.Bot;
 import Starting.StartingMenu;
 
 import Figures.*;
@@ -22,10 +23,13 @@ public class ChessBoard extends JFrame{
     private static ArrayList<AbstractFigure> BlackFigures = new ArrayList<>();
     private static ArrayList<AbstractFigure> WhiteFigures = new ArrayList<>();
     public static ArrayList<AbstractFigure> getBlackFigures() {
-        return BlackFigures;
+        if (Config.COLOR.equals("WHITE")) return BlackFigures;
+        else return WhiteFigures;
+
     }
     public static ArrayList<AbstractFigure> getWhiteFigures() {
-        return WhiteFigures;
+        if (Config.COLOR.equals("WHITE")) return WhiteFigures;
+        else return BlackFigures;
     }
 
 
@@ -49,6 +53,7 @@ public class ChessBoard extends JFrame{
         WhiteToStep = whiteToStep;
     }
 
+
     public ChessBoard() {
 
         setLayout(null);
@@ -61,8 +66,10 @@ public class ChessBoard extends JFrame{
         repaint();
 
 
-
     }
+
+
+
 
 
 
@@ -177,13 +184,12 @@ public class ChessBoard extends JFrame{
             }
 
             if (DrawFiguresOnce) {
-                if(Config.COLOR.equals("WHITE")) {
-                    WhiteToStep = true;
-                } else {
-                    WhiteToStep = false;
-                }
+
                 DrawFiguresOnce = false;
                 DrawFigures();
+                if (Config.BOT && Config.COLOR.equals("BLACK")) {
+                    Bot.RandomMover();
+                }
             }
             repaint();
 
