@@ -21,24 +21,14 @@ public class Bishop extends AbstractFigure {
             this.Color = Color;
         } else this.Color = !Color;
 
-        if (Color) {
-            if (Config.COLOR.equals("WHITE")) {
-                ActualCell.setOccupiedColor(true);
-                setIcon(iconChange(Size).get("WBishop.png"));
-            } else {
-                ActualCell.setOccupiedColor(false);
-                setIcon(iconChange(Size).get("BBishop.png"));
-            }
-
+        if (this.Color) {
+            ActualCell.setOccupiedColor(true);
+            setIcon(iconChange(Size).get("WBishop.png"));
         } else {
-            if (Config.COLOR.equals("BLACK")) {
-                ActualCell.setOccupiedColor(true);
-                setIcon(iconChange(Size).get("WBishop.png"));
-            } else {
-                ActualCell.setOccupiedColor(false);
-                setIcon(iconChange(Size).get("BBishop.png"));
-            }
+            ActualCell.setOccupiedColor(false);
+            setIcon(iconChange(Size).get("BBishop.png"));
         }
+
     }
 
 

@@ -20,24 +20,14 @@ public class Knight extends AbstractFigure {
         if (Config.COLOR.equals("WHITE")) {
             this.Color = Color;
         } else this.Color = !Color;
-        if (Color) {
-            if (Config.COLOR.equals("WHITE")) {
-                ActualCell.setOccupiedColor(true);
-                setIcon(iconChange(Size).get("WKnight.png"));
-            } else {
-                ActualCell.setOccupiedColor(false);
-                setIcon(iconChange(Size).get("BKnight.png"));
-            }
 
-        } else {
-            if (Config.COLOR.equals("BLACK")) {
+        if (this.Color) {
                 ActualCell.setOccupiedColor(true);
                 setIcon(iconChange(Size).get("WKnight.png"));
             } else {
                 ActualCell.setOccupiedColor(false);
                 setIcon(iconChange(Size).get("BKnight.png"));
             }
-        }
     }
 
 

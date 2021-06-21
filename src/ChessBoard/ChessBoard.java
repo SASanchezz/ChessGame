@@ -36,7 +36,7 @@ public class ChessBoard extends JFrame{
     public static King WKing;
     public static King BKing;
 
-    private static Boolean WhiteToStep = true;
+    private static Boolean WhiteToStep;
 
 
     private static String[] letters = {
@@ -61,7 +61,7 @@ public class ChessBoard extends JFrame{
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
         setContentPane(new DrawBoard());
-
+        WhiteToStep = true;
         setVisible(true);
         repaint();
 
@@ -150,6 +150,7 @@ public class ChessBoard extends JFrame{
 //            setBackground(Color.ORANGE);
 
             add(ExitButton());
+            add(DrawButton());
             add(ReturnButton());
 
             Graphics2D g2 = (Graphics2D) g;
@@ -207,6 +208,26 @@ public class ChessBoard extends JFrame{
             } );
             return button;
         }
+
+
+        private JButton DrawButton() {
+            JButton button = new JButton("Draw!");
+            button.setBounds(ChessBoard.this.getWidth()-100, ChessBoard.this.getHeight()/2, 100, 30);
+            button.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+
+                    JOptionPane.showMessageDialog(Config.MAINBOARD,
+                            "Draw");
+                    setVisible(false);
+                    dispose();
+                    new StartingMenu();
+                }
+            } );
+            return button;
+        }
+
 
         private JButton ReturnButton() {
             JButton button = new JButton("To menu");

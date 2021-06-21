@@ -64,8 +64,6 @@ public abstract class AbstractFigure extends JButton {
                     String FCell = Character.toString(StartKey[0].charAt(0) + xDifference) + ((Integer.parseInt(StartKey[1]) + yDifference));
                     Cell FinalCell = getCellSet().get(FCell);
 
-                    System.out.println("White to step: "+isWhiteToStep() + "   and color: "+ Figure.Color);
-
                     boolean ConfigColor = Config.COLOR.equals("WHITE");
 
 
@@ -74,8 +72,14 @@ public abstract class AbstractFigure extends JButton {
                     } else if (!isWhiteToStep() && !Figure.Color && !Config.BOT) {
                         move(FinalCell);
                     } else if (Figure.Color == ConfigColor && Config.BOT) {
+                        System.out.println("Our move");
+                        Cell OldCell = ActualCell;
                         move(FinalCell);
-                        RandomMover();
+
+                        if(!OldCell.equals(ActualCell)  && isMate()){
+                            RandomMover();
+
+                        }
                     }
                 }
             }
@@ -163,7 +167,7 @@ public abstract class AbstractFigure extends JButton {
                     Boolean doNextAction = true;
 
                     for (AbstractFigure figure: FoeFigureSet) {
-                        if(figure != null) {
+                        if(figure != null && figure.AllowedMoves().size() > 0) {
                             for (Cell AlCell: figure.AllowedMoves()) {
 
                                 if (AlCell.getOccupation() != null && Color == AlCell.getOccupiedColor() && AlCell.getOccupation().getClass().getName().equals("Figures.King")) {
@@ -195,10 +199,9 @@ public abstract class AbstractFigure extends JButton {
             }
             for (Cell StepCell: AllowedMoves()) {
                 if (StepCell.getOccupation() != null) {
-                    if (StepCell.getOccupation().getClass().getName().equals("Figures.King") && !StepCell.getOccupiedColor() == Color) {
+                    if (StepCell.getOccupation().getClass().getName().equals("Figures.King") && StepCell.getOccupiedColor() != Color) {
                         StepCell.getOccupation().setDangerFigure(this);
                         StepCell.getOccupation().setDangered(true);
-                        System.out.println("set dangered: " +StepCell.getOccupation());
                     }
                 }
             }
@@ -206,6 +209,9 @@ public abstract class AbstractFigure extends JButton {
 
 
         }
+    }
+    public ArrayList<Cell> StraightAllowedMoves() {
+        return new ArrayList<Cell>();
     }
 
     public void setDangerFigure(AbstractFigure abstractFigure) {

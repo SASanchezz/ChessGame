@@ -22,24 +22,13 @@ public class Rook extends AbstractFigure {
             this.Color = Color;
         } else this.Color = !Color;
 
-        if (Color) {
-            if (Config.COLOR.equals("WHITE")) {
-                ActualCell.setOccupiedColor(true);
-                setIcon(iconChange(Size).get("WRook.png"));
-            } else {
-                ActualCell.setOccupiedColor(false);
-                setIcon(iconChange(Size).get("BRook.png"));
-            }
-
+        if (this.Color) {
+            ActualCell.setOccupiedColor(true);
+            setIcon(iconChange(Size).get("WRook.png"));
         } else {
-            if (Config.COLOR.equals("BLACK")) {
-                ActualCell.setOccupiedColor(true);
-                setIcon(iconChange(Size).get("WRook.png"));
-            } else {
-                ActualCell.setOccupiedColor(false);
-                setIcon(iconChange(Size).get("BRook.png"));
+            ActualCell.setOccupiedColor(false);
+            setIcon(iconChange(Size).get("BRook.png"));
             }
-        }
     }
 
 

@@ -30,7 +30,6 @@ public class PawnWhite extends AbstractFigure{
 
     @Override
     public void move (Cell toCell) {
-        System.out.println("King is dangered: "+ WKing.isDangered()+" or "+ BKing.isDangered());
         King MainKing = null;
         Cell OldCell = ActualCell;
 
@@ -45,7 +44,7 @@ public class PawnWhite extends AbstractFigure{
         }
 
         if (UpdatedAllowedMoves().contains(toCell) && (
-                !(toCell.getBoardLoc().charAt(0) != ActualCell.getBoardLoc().charAt(0)) ||
+                toCell.getBoardLoc().charAt(0) == ActualCell.getBoardLoc().charAt(0) ||
                         (toCell.getBoardLoc().charAt(0) != ActualCell.getBoardLoc().charAt(0) && Color != toCell.getOccupiedColor() && toCell.getOccupation() != null)
         )) {
 
@@ -82,8 +81,7 @@ public class PawnWhite extends AbstractFigure{
                 if (doNextAction) {
                     if (OldFigureKilled != null) {
                         OldFigureKilled.setBounds(0, 0, 0, 0);
-                        getBlackFigures().remove(OldFigureKilled);
-                        getWhiteFigures().remove(OldFigureKilled);
+                        FoeFigureSet.remove(OldFigureKilled);
                     }
 
                     setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
@@ -162,7 +160,7 @@ public class PawnWhite extends AbstractFigure{
         return AllowedMoves;
     }
 
-    public ArrayList UpdatedAllowedMoves() {
+    public ArrayList<Cell> UpdatedAllowedMoves() {
         //hit
         ArrayList<Cell> AllowedMoves = new ArrayList<>();
         String key = ActualCell.getBoardLoc();
@@ -194,4 +192,37 @@ public class PawnWhite extends AbstractFigure{
 
         return AllowedMoves;
     }
-}
+
+    @Override
+    public ArrayList<Cell> StraightAllowedMoves() {
+        System.out.println();
+
+        ArrayList<Cell> AllowedMoves = new ArrayList<>();
+        String key = ActualCell.getBoardLoc();
+
+        if (!ActualCell.getBoardLoc().split("")[1].equals("8")) {
+
+            String CellAhead = key.charAt(0) + Character.toString(key.charAt(1) + 1);
+
+            if (getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupation() == null ) {
+
+                AllowedMoves.add(getCellSet().get(CellAhead));
+            }
+            if (key.split("")[1].equals("2") &&
+                    getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 1)).getOccupation() == null &&
+                    getCellSet().get(key.charAt(0) + Character.toString(key.charAt(1) + 2)).getOccupation() == null) {
+
+                CellAhead = key.charAt(0) + Character.toString(key.charAt(1) + 2);
+                AllowedMoves.add(getCellSet().get(CellAhead));
+
+            }
+        }
+        return AllowedMoves;
+    }
+
+    @Override
+    public String toString() {
+        return Color + " " + getClass().getName().split("\\.")[1];
+
+    }
+    }

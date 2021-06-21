@@ -21,24 +21,13 @@ public class Queen extends AbstractFigure {
             this.Color = Color;
         } else this.Color = !Color;
 
-        if (Color) {
-            if (Config.COLOR.equals("WHITE")) {
+        if (this.Color) {
                 ActualCell.setOccupiedColor(true);
                 setIcon(iconChange(Size).get("WQueen.png"));
             } else {
                 ActualCell.setOccupiedColor(false);
                 setIcon(iconChange(Size).get("BQueen.png"));
             }
-
-        } else {
-            if (Config.COLOR.equals("BLACK")) {
-                ActualCell.setOccupiedColor(true);
-                setIcon(iconChange(Size).get("WQueen.png"));
-            } else {
-                ActualCell.setOccupiedColor(false);
-                setIcon(iconChange(Size).get("BQueen.png"));
-            }
-        }
     }
 
 
