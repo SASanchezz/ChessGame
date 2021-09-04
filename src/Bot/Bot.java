@@ -31,24 +31,30 @@ public class Bot {
             MyFigures.add((MainBKing));
         }
 
-        for (AbstractFigure MyFigure: MyFigures ) {
 
-
-
-            for (Cell AttackCell: MyFigure.AllowedMoves()) {
-
-                if (AttackCell.getOccupation() != null && AttackCell.getOccupiedColor() != MyColor) {
-                    System.out.println("Attack figure: "+ MyFigure.getActualCell() + " to cell: "+ AttackCell );
-                    MyFigure.move(AttackCell);
-                    return;
-                }
-            }
-        }
-        AbstractFigure RandomFigure;
-        ArrayList<Cell> MainList;
 
 //        in case of check
         while (true){
+
+            for (AbstractFigure MyFigure: MyFigures ) {
+
+
+
+                for (Cell AttackCell: MyFigure.AllowedMoves()) {
+
+                    if (AttackCell != null &&  AttackCell.getOccupation() != null && AttackCell.getOccupiedColor() != MyColor) {
+                        Cell PreviousCell = MyFigure.getActualCell();
+
+                        System.out.println("Attack figure: "+ MyFigure.getActualCell() + " to cell: "+ AttackCell );
+                        MyFigure.move(AttackCell);
+
+                        if (! PreviousCell.equals(MyFigure.getActualCell())) return;
+
+                    }
+                }
+            }
+            AbstractFigure RandomFigure;
+            ArrayList<Cell> MainList;
 
             while (true) {
 

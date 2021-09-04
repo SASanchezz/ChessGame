@@ -76,7 +76,7 @@ public abstract class AbstractFigure extends JButton {
                         Cell OldCell = ActualCell;
                         move(FinalCell);
 
-                        if(!OldCell.equals(ActualCell)  && isMate()){
+                        if(!OldCell.equals(ActualCell) && !Config.FINISHED ){
                             RandomMover();
 
                         }
@@ -85,9 +85,6 @@ public abstract class AbstractFigure extends JButton {
             }
         });
     }
-
-
-
 
 
     public ArrayList<Cell> AllowedMoves() {
@@ -108,6 +105,7 @@ public abstract class AbstractFigure extends JButton {
             } else if (!Color && BKing.isDangered()) {
                 MainKing = BKing;
             }
+
             ArrayList<AbstractFigure> FoeFigureSet = null;
             if (Color) {
                     FoeFigureSet = getBlackFigures();
@@ -115,29 +113,26 @@ public abstract class AbstractFigure extends JButton {
                     FoeFigureSet = getWhiteFigures();
             }
 
+//            If our king is dangered
             if(MainKing != null && toCell != MainKing.getDangerFigure().getActualCell()) {
                 System.out.println("Main king is not null");
 
 
-                Boolean OldColorKilled = toCell.getOccupiedColor();
                 AbstractFigure OldFigureKilled = toCell.getOccupation();
                 ActualCell.setOccupation(null);
                 ActualCell = toCell;
-                ActualCell.setOccupiedColor(Color);
                 ActualCell.setOccupation(this);
 
-
-
+//                  Check if there is danger for king
                 Boolean doNextAction = true;
                 for (Cell StepCell: MainKing.getDangerFigure().AllowedMoves()) {
-                    if (StepCell.getOccupation() != null) {
-                        if (StepCell.getOccupation().getClass().getName().equals("Figures.King")) {
+                    if (StepCell.getOccupation() != null && this.Color == StepCell.getOccupiedColor() && StepCell.getOccupation().getClass().getName().equals("Figures.King")) {
                             ActualCell.setOccupation(OldFigureKilled);
-                            ActualCell.setOccupiedColor(OldColorKilled);
                             ActualCell = OldCell;
                             ActualCell.setOccupation(this);
+
+                            FoeFigureSet.add(OldFigureKilled);
                             doNextAction = false;
-                        }
                     }
                 }
                 if (doNextAction) {
@@ -155,6 +150,7 @@ public abstract class AbstractFigure extends JButton {
 
 
             } else {
+                ArrayList<AbstractFigure> CopyFoeFigureSet = new ArrayList<>(FoeFigureSet);
                 if (MainKing != null) MainKing.setDangered(false);
 
                     Boolean OldColorKilled = toCell.getOccupiedColor();
@@ -166,15 +162,17 @@ public abstract class AbstractFigure extends JButton {
 
                     Boolean doNextAction = true;
 
-                    for (AbstractFigure figure: FoeFigureSet) {
+                    for (AbstractFigure figure: CopyFoeFigureSet) {
                         if(figure != null && figure.AllowedMoves().size() > 0) {
                             for (Cell AlCell: figure.AllowedMoves()) {
 
-                                if (AlCell.getOccupation() != null && Color == AlCell.getOccupiedColor() && AlCell.getOccupation().getClass().getName().equals("Figures.King")) {
+                                if (AlCell != null && AlCell.getOccupation() != null && Color == AlCell.getOccupiedColor() && AlCell.getOccupation().getClass().getName().equals("Figures.King")) {
                                     ActualCell.setOccupation(OldFigureKilled);
                                     ActualCell.setOccupiedColor(OldColorKilled);
                                     ActualCell = OldCell;
                                     ActualCell.setOccupation(this);
+
+                                    FoeFigureSet.add(OldFigureKilled);
                                     doNextAction = false;
                                 }
                             }
@@ -190,18 +188,17 @@ public abstract class AbstractFigure extends JButton {
                         setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                                 ActualCell.getCellSize(), ActualCell.getCellSize());
                         setWhiteToStep(!isWhiteToStep());
-
-
-                    } else FoeFigureSet.add(OldFigureKilled);
+                    }
 
 
 
             }
             for (Cell StepCell: AllowedMoves()) {
-                if (StepCell.getOccupation() != null) {
+                if (StepCell != null && StepCell.getOccupation() != null) {
                     if (StepCell.getOccupation().getClass().getName().equals("Figures.King") && StepCell.getOccupiedColor() != Color) {
                         StepCell.getOccupation().setDangerFigure(this);
                         StepCell.getOccupation().setDangered(true);
+                        System.out.println("Set danger on KING");
                     }
                 }
             }

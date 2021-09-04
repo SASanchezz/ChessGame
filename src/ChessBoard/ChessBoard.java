@@ -61,15 +61,15 @@ public class ChessBoard extends JFrame{
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
         setContentPane(new DrawBoard());
+
         WhiteToStep = true;
+        Config.FINISHED = false;
+
         setVisible(true);
         repaint();
 
 
     }
-
-
-
 
 
 
@@ -142,7 +142,7 @@ public class ChessBoard extends JFrame{
     class DrawBoard extends JPanel {
         DrawBoard() {
 
-            setLayout(null);
+        setLayout(null);
 
         }
         Boolean DrawFiguresOnce = true;

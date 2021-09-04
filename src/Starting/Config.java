@@ -1,6 +1,5 @@
 package Starting;
 
-import Bot.Bot;
 import ChessBoard.ChessBoard;
 
 public class Config {
@@ -8,6 +7,7 @@ public class Config {
     static public Boolean BOT = false;
     static public ChessBoard MAINBOARD;
 
+    static public boolean FINISHED;
 
 
 }

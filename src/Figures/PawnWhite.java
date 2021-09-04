@@ -10,10 +10,11 @@ import java.util.ArrayList;
 
 public class PawnWhite extends AbstractFigure{
     Boolean Color;
-
+    int Size;
 
     public PawnWhite(Cell SomeCell, int Size, Boolean Color) {
         super(SomeCell, Color);
+        this.Size = Size;
         if (Config.COLOR.equals("WHITE")) {
             this.Color = Color;
         } else this.Color = !Color;
@@ -68,7 +69,7 @@ public class PawnWhite extends AbstractFigure{
 
                 Boolean doNextAction = true;
                 for (Cell StepCell : MainKing.getDangerFigure().AllowedMoves()) {
-                    if (StepCell.getOccupation() != null) {
+                    if (StepCell != null && StepCell.getOccupation() != null) {
                         if (StepCell.getOccupation().getClass().getName().equals("Figures.King")) {
                             ActualCell.setOccupation(OldFigureKilled);
                             ActualCell.setOccupiedColor(OldColorKilled);
@@ -86,6 +87,24 @@ public class PawnWhite extends AbstractFigure{
 
                     setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
                             ActualCell.getCellSize(), ActualCell.getCellSize());
+
+                    //22.06.2021
+                    if (toCell.getBoardLoc().charAt(1) == '8') {
+                        setBounds(0,0,0,0);
+
+                        Queen newQueen = new Queen(ActualCell, Size, Color);
+                        Config.MAINBOARD.getContentPane().add(newQueen);
+
+                        if (Color) {
+                            newQueen.setIcon(iconChange(Size).get("WQueen.png"));
+                            getWhiteFigures().add(newQueen);
+                        }
+                        else {
+                            newQueen.setIcon(iconChange(Size).get("BQueen.png"));
+                            getBlackFigures().add(newQueen);
+                        }
+                    }
+
                     setWhiteToStep(!isWhiteToStep());
 
                     MainKing.setDangered(false);
@@ -97,40 +116,60 @@ public class PawnWhite extends AbstractFigure{
                 if (MainKing != null) MainKing.setDangered(false);
 
 
-                    Boolean OldColorKilled = toCell.getOccupiedColor();
-                    AbstractFigure OldFigureKilled = toCell.getOccupation();
-                    ActualCell.setOccupation(null);
-                    ActualCell = toCell;
-                    ActualCell.setOccupation(this);
-                    FoeFigureSet.remove(OldFigureKilled);
+                AbstractFigure OldFigureKilled = toCell.getOccupation();
+                ActualCell.setOccupation(null);
+                ActualCell = toCell;
+                ActualCell.setOccupation(this);
+                FoeFigureSet.remove(OldFigureKilled);
+                ArrayList<AbstractFigure> CopyFoeFigureSet = new ArrayList<>(FoeFigureSet);
 
-                    Boolean doNextAction = true;
-                    for (AbstractFigure figure : FoeFigureSet) {
-                        if(figure != null) {
-                            for (Cell AlCell : figure.AllowedMoves()) {
-                                if (AlCell.getOccupation() != null && Color == AlCell.getOccupiedColor() && AlCell.getOccupation().getClass().getName().equals("Figures.King")) {
+                Boolean doNextAction = true;
+                for (AbstractFigure figure : CopyFoeFigureSet) {
+                    if(figure != null) {
+                        for (Cell AlCell : figure.AllowedMoves()) {
+                            if (AlCell != null && AlCell.getOccupation() != null && Color == AlCell.getOccupiedColor() && AlCell.getOccupation().getClass().getName().equals("Figures.King")) {
 
-                                    ActualCell.setOccupation(OldFigureKilled);
-                                    ActualCell.setOccupiedColor(OldColorKilled);
-                                    ActualCell = OldCell;
-                                    ActualCell.setOccupation(this);
-                                    doNextAction = false;
-                                }
+                                ActualCell.setOccupation(OldFigureKilled);
+                                ActualCell = OldCell;
+                                ActualCell.setOccupation(this);
+
+                                FoeFigureSet.add(OldFigureKilled);
+                                doNextAction = false;
                             }
                         }
+                    }
+
+                }
+                if (doNextAction) {
+                    if (OldFigureKilled != null) {
+                        OldFigureKilled.setBounds(0, 0, 0, 0);
+                        FoeFigureSet.remove(OldFigureKilled);
 
                     }
-                    if (doNextAction) {
-                        if (OldFigureKilled != null) {
-                            OldFigureKilled.setBounds(0, 0, 0, 0);
-                            FoeFigureSet.remove(OldFigureKilled);
+                    setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
+                            ActualCell.getCellSize(), ActualCell.getCellSize());
+
+                    if (toCell.getBoardLoc().charAt(1) == '8') {
+                        setBounds(0,0,0,0);
+
+                        Queen newQueen = new Queen(ActualCell, Size, Color);
+                        Config.MAINBOARD.getContentPane().add(newQueen);
+
+                        if (Color) {
+                            newQueen.setIcon(iconChange(Size).get("WQueen.png"));
+                            getWhiteFigures().add(newQueen);
 
                         }
-                        setBounds(ActualCell.getREAL_COORDINATES()[0], ActualCell.getREAL_COORDINATES()[1],
-                                ActualCell.getCellSize(), ActualCell.getCellSize());
-                        setWhiteToStep(!isWhiteToStep());
+                        else {
+                            newQueen.setIcon(iconChange(Size).get("BQueen.png"));
+                            getBlackFigures().add(newQueen);
 
-                    } else FoeFigureSet.add(OldFigureKilled);
+                        }
+                    }
+
+                    setWhiteToStep(!isWhiteToStep());
+
+                } else FoeFigureSet.add(OldFigureKilled);
 
 
             }

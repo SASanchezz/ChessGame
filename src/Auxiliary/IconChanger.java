@@ -1,7 +1,7 @@
 package Auxiliary;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -27,8 +27,10 @@ public class IconChanger {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 Image dimg = img.getScaledInstance(Size, Size,
                         Image.SCALE_SMOOTH);
+
                 ImageIcon imageIcon = new ImageIcon(dimg);
 
                 Icons.put(child.getName(), imageIcon);
